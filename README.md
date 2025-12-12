@@ -224,6 +224,13 @@ If conversion history doesn't persist:
 2. Check if you're in private/incognito mode
 3. Clear browser cache and try again
 
+## AI-Assisted Development Workflow
+
+When working with AI assistants on this project:
+
+1. Start each session by asking the AI to create a to-do list
+2. Maintain `copilot_session.log` for long operations
+
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
