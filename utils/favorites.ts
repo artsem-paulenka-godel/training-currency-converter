@@ -1,9 +1,9 @@
 type Subscriber = (list: string[]) => void;
 
 const STORAGE_KEY = 'tcc.favorites';
-const MAX_ITEMS = 20;
+const MAX_ITEMS = 5;
 
-function isValidCurrency(code: string) {
+function isValidCurrency(code: string): boolean {
   return /^[A-Z]{3}$/.test(code);
 }
 
@@ -21,14 +21,14 @@ class Favorites {
     }
   }
 
-  private handleStorageEvent(e: StorageEvent) {
+  private handleStorageEvent(e: StorageEvent): void {
     if (e.key === STORAGE_KEY) {
       this.loadFromStorage();
       this.notify();
     }
   }
 
-  private loadFromStorage() {
+  private loadFromStorage(): void {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) { this.inMemory = []; return; }
@@ -43,7 +43,7 @@ class Favorites {
     }
   }
 
-  private saveToStorage() {
+  private saveToStorage(): void {
     if (!this.useLocalStorage) { return; }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.inMemory));
@@ -53,7 +53,7 @@ class Favorites {
     }
   }
 
-  private init() {
+  private init(): void {
     try {
       if (typeof localStorage === 'undefined') { this.useLocalStorage = false; }
     } catch (e) {
@@ -62,20 +62,25 @@ class Favorites {
     this.loadFromStorage();
   }
 
-  list() {
+  list(): string[] {
     return [...this.inMemory];
   }
 
-  add(code: string) {
-    if (!isValidCurrency(code)) { return; }
-    if (this.inMemory.includes(code)) { return; }
-    this.inMemory.push(code);
-    if (this.inMemory.length > MAX_ITEMS) { this.inMemory = this.inMemory.slice(-MAX_ITEMS); }
-    this.saveToStorage();
-    this.notify();
+  isFull(): boolean {
+    return this.inMemory.length >= MAX_ITEMS;
   }
 
-  remove(code: string) {
+  add(code: string): boolean {
+    if (!isValidCurrency(code)) { return false; }
+    if (this.inMemory.includes(code)) { return false; }
+    if (this.inMemory.length >= MAX_ITEMS) { return false; }
+    this.inMemory.push(code);
+    this.saveToStorage();
+    this.notify();
+    return true;
+  }
+
+  remove(code: string): void {
     const idx = this.inMemory.indexOf(code);
     if (idx === -1) { return; }
     this.inMemory.splice(idx, 1);
@@ -83,7 +88,7 @@ class Favorites {
     this.notify();
   }
 
-  subscribe(cb: Subscriber) {
+  subscribe(cb: Subscriber): () => void {
     this.subscribers.push(cb);
     cb(this.list());
     return () => {
@@ -91,7 +96,7 @@ class Favorites {
     };
   }
 
-  private notify() {
+  private notify(): void {
     const snapshot = this.list();
     this.subscribers.forEach((s) => { try { s(snapshot); } catch (e) { /* ignore */ } });
   }

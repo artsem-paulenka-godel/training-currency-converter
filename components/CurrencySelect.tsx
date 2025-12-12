@@ -12,6 +12,7 @@ export default function CurrencySelect({ value, onChange, label }: CurrencySelec
   const [isFav, setIsFav] = useState(false);
   // Initialize to empty array to match SSR; load from localStorage in useEffect
   const [favList, setFavList] = useState<string[]>([]);
+  const [showLimitWarning, setShowLimitWarning] = useState(false);
 
   useEffect(() => {
     // subscribe to favorites updates
@@ -26,12 +27,27 @@ export default function CurrencySelect({ value, onChange, label }: CurrencySelec
     return unsubscribe;
   }, [value]);
 
+  // Auto-dismiss limit warning after 3 seconds
+  useEffect(() => {
+    if (showLimitWarning) {
+      const timer = setTimeout(() => {
+        setShowLimitWarning(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showLimitWarning]);
+
   function toggleFavorite(e: React.MouseEvent) {
     e.preventDefault();
     if (isFav) {
       favorites.remove(value);
+      setShowLimitWarning(false);
     } else {
-      favorites.add(value);
+      const added = favorites.add(value);
+      if (!added) {
+        // Limit reached, show warning
+        setShowLimitWarning(true);
+      }
     }
   }
 
@@ -104,6 +120,11 @@ export default function CurrencySelect({ value, onChange, label }: CurrencySelec
             </svg>
           </div>
         </div>
+        {showLimitWarning && (
+          <p className="text-amber-600 text-sm mt-1">
+            Maximum 5 favorites reached
+          </p>
+        )}
       </div>
     </div>
   );
