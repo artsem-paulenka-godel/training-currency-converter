@@ -155,7 +155,7 @@ Explain the logic of this function and suggest optimization.
 
 - Set **custom instructions** in `.github/copilot-instructions.md` to enforce project standards
 - Create reusable **prompt templates** in `.github/prompts/` folder
-- Design **custom chat modes** in `.github/chatmodes/` for specialized workflows
+- Design **custom agents** in `.github/agents/` for specialized workflows
 - Add **file-specific instructions** in `.github/instructions/` (e.g., `nextjs.instructions.md`)
 - Configure ToolSet (up to 128 tools per request) for agent-driven tasks
 - Automate GitHub tasks (issues, PRs, workflows)
@@ -163,7 +163,7 @@ Explain the logic of this function and suggest optimization.
 ### Why it matters:
 
 - Instructions enforce coding standards and architectural patterns
-- Chat Modes accelerate repetitive tasks (bug fixing, feature implementation)
+- Agents accelerate repetitive tasks (bug fixing, feature implementation)
 - Prompt templates ensure consistency across team
 - File-specific instructions apply framework best practices automatically
 
@@ -171,9 +171,10 @@ Explain the logic of this function and suggest optimization.
 
 - **Central instructions file**: `.github/copilot-instructions.md` for project-wide rules
 - **Prompt templates**: Create `.prompt.md` files for common workflows (see our `bug-fixing.prompt.md`, `introduction.prompt.md`)
-- **Custom chat modes**: Define `.chatmode.md` files with specific tool configurations (see our `beast.chatmode.md` with 20+ tools)
+- **Custom agents**: Define `.agent.md` files with specific tool configurations (see our `beast.agent.md` with 20+ tools)
 - **Pattern documentation**: Include architecture patterns, testing conventions, and critical gotchas
 - **Session management rules**: Always create todo lists, maintain context logs
+
 
 ### This Project's Implementation
 
@@ -205,12 +206,12 @@ Explain the logic of this function and suggest optimization.
 - `introduction.prompt.md` - Project onboarding for new contributors
 - **Source**: Custom-created with GitHub Copilot by analyzing this project's requirements, architecture and patterns
 
-**3. Custom Chat Modes** (`.github/chatmodes/`):
+**3. Custom Agents** (`.github/agents/`):
 
-- `beast.chatmode.md` - Agent mode with 20+ tools for autonomous problem-solving
+- `beast.agent.md` - Agent mode with 20+ tools for autonomous problem-solving
   - Includes: codebase search, test execution, terminal commands, web fetch
   - Configured with `mode: agent` for multi-step autonomous work
-  - **Source**: [Burke Holland's Beast Mode 3.1](https://gist.github.com/burkeholland/88af0249c4b6aff3820bf37898c8bacf)
+  - **Source**: [Beast Mode](https://github.com/github/awesome-copilot/blob/main/agents/4.1-Beast.agent.md)
 
 **4. File-Specific Instructions** (`.github/instructions/`):
 

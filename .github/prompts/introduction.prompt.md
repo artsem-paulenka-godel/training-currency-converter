@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 ---
 
 # Currency Converter App - Introduction
