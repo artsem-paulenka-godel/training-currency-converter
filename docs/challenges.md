@@ -23,6 +23,7 @@ Learn AI-assisted development with GitHub Copilot through hands-on challenges.
 | 5 | [Feature Development](5-challenge-feature.md) | 🟡 Intermediate | `feature` | Gather requirements with AI clarification |
 | 6 | [GitHub Issues](6-challenge-agent-issue.md) | 🟡 Intermediate | `agent-issue` | Create issues and PRs with AI |
 | 7 | [Spec-Kit](7-challenge-spec-kit.md) | 🔴 Advanced | `spec-kit` | Spec-driven development workflow |
+| 8 | [Optional Advanced](8-challenge-optional-advanced.md) | 🔴 Advanced | - | E2E testing, code review, refactoring, security, docs |
 
 > **Note:** Each branch contains the **completed solution**. Switch to a branch only to compare your work or see the reference implementation.
 
