@@ -11,6 +11,7 @@
 GitHub Copilot can be customized to understand your project's architecture, coding standards, and workflows. This is done through configuration files in the `.github/` folder:
 
 - Set **custom instructions** in `.github/copilot-instructions.md` to enforce project standards
+  - **OPTIONAL**: Use `AGENTS.md` at the root as an alternative (preferred by some agents like Claude, Gemini, Windsurf)
 - Create reusable **prompt templates** in `.github/prompts/` folder
 - Design **custom agents** in `.github/agents/` for specialized workflows
 - Add **file-specific instructions** in `.github/instructions/` (e.g., `nextjs.instructions.md`)
@@ -27,6 +28,7 @@ GitHub Copilot can be customized to understand your project's architecture, codi
 ### Best practices:
 
 - **Central instructions file**: `.github/copilot-instructions.md` for project-wide rules
+  - **OPTIONAL**: Create `AGENTS.md` at the repository root as an alternative that works with multiple AI agents (Claude, Gemini, Cursor, Windsurf, etc.)
 - **Prompt templates**: Create `.prompt.md` files for common workflows
 - **Custom agents**: Define `.agent.md` files with specific tool configurations
 - **Pattern documentation**: Include architecture patterns, testing conventions, and critical gotchas
@@ -54,6 +56,10 @@ GitHub Copilot can be customized to understand your project's architecture, codi
 - Co-located tests (.tsx + .test.tsx)
 - URL state management pattern
 - API error handling with fallbacks
+
+## **Note**: You can use either approach:
+> - **GitHub Copilot**: Place instructions in `.github/copilot-instructions.md`
+> - **Multi-Agent Support** (OPTIONAL): Create `AGENTS.md` at repository root for broader AI agent compatibility (Claude, Gemini, Cursor IDE, Windsurf, etc.).
 ```
 
 **2. Prompt Templates** (`.github/prompts/`):
@@ -82,12 +88,20 @@ Complete the following steps to customize Copilot for this project:
 
 ### Step 1: Create Custom Instructions
 
+**Choose one of the following approaches:**
+
+**Option A: GitHub Copilot (Primary)**
 1. Create a file `.github/copilot-instructions.md`
 2. Add project-specific rules covering:
    - Session management (todo lists, logging)
    - Architecture patterns (hooks, components, state)
    - Testing conventions
    - Critical gotchas
+
+**Option B: Multi-Agent Support (OPTIONAL)**
+1. Create a file `AGENTS.md` at the repository root
+2. Use the same content structure as Option A
+3. This file will be automatically discovered by Claude, Gemini, Cursor, Windsurf, and other compatible agents
 
 ### Step 2: Create a Prompt Template
 
@@ -119,7 +133,7 @@ Complete the following steps to customize Copilot for this project:
 
 ## ✅ Success Criteria
 
-- [ ] Custom instructions file created (`.github/copilot-instructions.md`)
+- [ ] Custom instructions created (either `.github/copilot-instructions.md` OR `AGENTS.md`)
 - [ ] Copilot responds with project context awareness
 - [ ] At least one prompt template created
 - [ ] At least one custom agent created
