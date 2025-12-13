@@ -13,6 +13,7 @@ A reference guide for effective AI-assisted development with GitHub Copilot.
 - [4. Copilot Limitations and Issues](#4-copilot-limitations-and-issues)
 - [5. Inline Mode and Keyboard Shortcuts](#5-inline-mode-and-keyboard-shortcuts)
 - [6. Working with Translation](#6-working-with-translation)
+- [7. Additional Copilot Features](#7-additional-copilot-features)
 
 ---
 
@@ -171,9 +172,94 @@ Explain the logic of this function and suggest optimization.
 
 ---
 
+## 7. Advanced Copilot Capabilities
+
+Beyond chat and code completion, Copilot offers powerful autonomous agents and tools:
+
+### Copilot Coding Agent
+
+**What it does:**
+Copilot works independently in the background to complete development tasks. It can fix bugs, implement features, improve test coverage, and update documentation. The agent operates in a sandbox environment, makes changes, and opens a pull request for your review.
+
+**When to use:**
+- Assign straightforward bugs or feature requests from GitHub Issues
+- Ask Copilot to fix specific problems via `@copilot` in PR comments
+- Delegate repetitive tasks (documentation updates, test improvements)
+
+**Example:**
+```
+Issue: "Add password validation to login form"
+Assign to @copilot → Agent creates PR with validation logic and tests
+```
+
+### Copilot Code Review
+
+**What it does:**
+Copilot reviews pull requests and provides actionable feedback on code quality, security, and best practices. Can integrate with static analysis tools (CodeQL, ESLint, PMD) for high-signal findings.
+
+**When to use:**
+- Request reviews on pull requests (available in VS Code, GitHub.com, JetBrains IDEs)
+- Set up automatic reviews for all new PRs in your repository
+- Focus on security, performance, and code quality issues
+
+**Example:**
+```
+Request review → Copilot analyzes code for vulnerabilities, duplicates, and improvements
+```
+
+### MCP (Model Context Protocol)
+
+**What it does:**
+Extends Copilot with custom tool integrations and external data sources. Allows Copilot to access specialized tools, APIs, or repositories beyond the current workspace.
+
+**When to use:**
+- Connect to external databases, APIs, or specialized tools
+- Create custom integrations for specific workflows
+- Extend Copilot coding agent with additional capabilities
+
+**Example:**
+```
+MCP integration with Playwright: Copilot can run tests and see results during development
+MCP integration with database tools: Copilot can query schemas for accurate migrations
+```
+
+### Vision/Image Analysis
+
+**What it does:**
+Copilot can analyze screenshots and images in chat conversations to understand UI bugs, design implementations, or error states visually.
+
+**When to use:**
+- Debugging UI issues (paste screenshot, ask "why is this button misaligned?")
+- Design implementation (show mockup, ask Copilot to implement the layout)
+- Error investigation (share error screenshots for context)
+
+**Example:**
+```
+Paste screenshot of broken layout → Explain what's wrong
+Copilot analyzes visual context and suggests CSS fixes
+```
+
+### Simple Browser
+
+**What it does:**
+Built-in VS Code tool that lets Copilot load and analyze live web pages, extracting HTML, CSS, and JavaScript without screenshots. Useful for understanding page structure and styling.
+
+**When to use:**
+- Analyzing live localhost pages during development (http://localhost:3000)
+- Understanding third-party website structure for integration
+- Extracting page content for analysis without manual copying
+
+**Example:**
+```
+"Analyze the form structure on http://localhost:3000/login and suggest validation improvements"
+Copilot extracts form HTML and can recommend changes without a screenshot
+```
+
+---
+
 ## Next Steps
 
-Ready to practice? → [Copilot Customisation Challenge](customisation.md)
+Ready to practice? → [Copilot Customisation Challenge](2-challenge-customisation.md)
 
 ---
 
