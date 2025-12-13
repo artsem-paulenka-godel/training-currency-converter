@@ -12,7 +12,7 @@ This repository is a hands-on learning platform for AI-assisted development with
 |------------|-----------|
 | 🟢 Beginner | [Project Creation](docs/1-challenge-project-creation.md), [Copilot Customisation](docs/2-challenge-customisation.md), [Unit Testing](docs/3-challenge-unit-test.md) |
 | 🟡 Intermediate | [Bug Fixing](docs/4-challenge-bug-fix.md), [Feature Development](docs/5-challenge-feature.md), [GitHub Issues](docs/6-challenge-agent-issue.md) |
-| 🔴 Advanced | [Spec-Kit](docs/7-challenge-spec-kit.md) |
+| 🔴 Advanced | [Spec-Kit](docs/7-challenge-spec-kit.md), [Optional Advanced](docs/8-challenge-optional-advanced.md) |
 
 > **Note:** Each branch contains the **completed solution**. Work through challenges using the docs, then check branches to compare your work.
 
@@ -254,4 +254,4 @@ For issues, questions, or suggestions, please open an issue on GitHub.
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: October 2025
+**Last Updated**: December 2025
