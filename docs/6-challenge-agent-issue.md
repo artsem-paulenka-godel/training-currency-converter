@@ -15,7 +15,7 @@ GitHub Issues help track features, bugs, and tasks. AI can help generate well-st
 ```
 Create a GitHub issue for this task:
 
-Add copyright notice "© 2025 Godel Technologies. All rights reserved."
+Add copyright notice "© {current year} Godel Technologies. All rights reserved."
 to the footer. Should work on desktop and mobile.
 
 Include: title, description, acceptance criteria, files to check, labels.
