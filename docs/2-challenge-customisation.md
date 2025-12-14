@@ -92,7 +92,8 @@ Complete the following steps to customize Copilot for this project:
 
 **Option A: GitHub Copilot (Primary)**
 1. Create a file `.github/copilot-instructions.md`
-2. Add project-specific rules covering:
+2. Ask Copilot to help you draft custom instructions
+3. Validate & add project-specific rules covering:
    - Session management (todo lists, logging)
    - Architecture patterns (hooks, components, state)
    - Testing conventions
@@ -106,7 +107,7 @@ Complete the following steps to customize Copilot for this project:
 ### Step 2: Create a Prompt Template
 
 1. Create a folder `.github/prompts/` if it doesn't exist
-2. Create a new prompt template file (e.g., `my-workflow.prompt.md`)
+2. Create a new prompt template file (e.g., `unitTest.prompt.md`)
 3. Define a reusable prompt for a common task you perform
 
 ### Step 3: Create a Custom Agent
@@ -114,7 +115,7 @@ Complete the following steps to customize Copilot for this project:
 1. Create a folder `.github/agents/` if it doesn't exist
 2. Create an agent file (e.g., `my-agent.agent.md`)
 3. Configure the agent with specific tools and behaviors
-4. Reference: [Beast Mode 3.1](https://github.com/github/awesome-copilot/blob/main/agents/4.1-Beast.agent.md)
+4. Reference: [Beast Mode](https://github.com/github/awesome-copilot/blob/main/agents/4.1-Beast.agent.md)
 
 ### Step 4: Create File-Specific Instructions
 
