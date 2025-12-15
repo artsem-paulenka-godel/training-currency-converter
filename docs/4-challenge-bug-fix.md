@@ -6,6 +6,23 @@
 
 ## 📖 Background
 
+Bug fixing is a discipline that should feel portable between projects: capture the issue, isolate the regression, land a verified patch. When Copilot is part of the workflow, the process becomes even more repeatable—automated summaries surface the root cause faster, generated tests guard against regressions, and prompt templates keep triage consistent.
+ 
+### Why it matters
+ 
+- Keeps Copilot grounded with the same context (logs, repro steps, fixtures) engineers rely on, so suggested patches align with real-world constraints
+- Turns debugging into an iterative loop: Copilot drafts hypotheses, you validate, then refine prompts with new evidence
+- Encourages every fix to ship with executable proof (tests, scripts) that Copilot can reuse on future incidents
+- Builds a living knowledge base of edge cases and mitigations that Copilot can cite when similar bugs reappear
+ 
+### Bug Fixing Best Practices
+ 
+- **Reproduce early**: capture deterministic steps, input data, and screenshots before touching code
+- **Instrument the fix**: lean on unit tests plus lightweight logging to validate both the failure and the patch
+- **Guard against regressions**: backfill missing tests, and run the suite (or focused watch targets) locally before shipping
+- **Document edge cases**: highlight currency/business rules directly in PR descriptions or inline comments when logic is non-obvious
+- **Automate verification**: add npm scripts or prompt templates so any engineer (or copilot) can rerun the scenario quickly
+
 ### Problem
 
 Users can select the same currency in both "From" and "To" dropdowns (e.g., USD → USD), making conversion meaningless.
