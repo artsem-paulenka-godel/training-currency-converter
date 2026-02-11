@@ -22,7 +22,7 @@ Write a comprehensive Jest + Testing Library test file for the specified source 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-import MyComponent from "./MyComponent";
+import { MyComponent } from "./MyComponent";
 
 describe("MyComponent", () => {
   const defaultProps = {
