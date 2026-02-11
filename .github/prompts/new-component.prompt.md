@@ -16,7 +16,7 @@ Scaffold a new presentational component and its co-located test.
 ## Template
 
 ```tsx
-import { CURRENCIES, formatAmount } from '@/utils/currency/currency';
+import { CURRENCIES, formatAmount } from '@/utils/currency';
 
 interface {ComponentName}Props {
   // define props

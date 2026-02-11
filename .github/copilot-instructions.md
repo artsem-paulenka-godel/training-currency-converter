@@ -100,7 +100,7 @@ Jest 30 + Testing Library + `jest-axe`. Config: `jest.config.js` (via `next/jest
 
 ## Critical Gotchas
 
-- **Never hard-code currency lists** — always import `CURRENCIES` from `utils/currency/currency`.
+- **Never hard-code currency lists** — always import `CURRENCIES` from `@/utils/currency`.
 - **Keep URL params in sync** — if you change conversion inputs, update `updateURL` in `useConverter`.
 - **`reactStrictMode: false`** in `next.config.js` — effects fire once in dev.
 - **`jest.setup.ts` mocks**: `console.error`/`console.warn` suppressed globally (restore in test if asserting). `useSearchParams().get` returns `null` by default (override per-test). `localStorage` is an in-memory mock.
