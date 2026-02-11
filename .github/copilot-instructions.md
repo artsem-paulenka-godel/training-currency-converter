@@ -1,5 +1,13 @@
 # Copilot Instructions
 
+## Session Management
+
+- **Always create a to-do list** at the start of each multi-step task or session.
+- **Maintain a temporary log file** (`copilot_session.log`) for context recovery during long operations.
+- Track progress and mark completed items to maintain visibility.
+- Before complex work, read relevant source files to build context.
+- Update documentation when you make changes that affect documentation.
+
 ## Project Overview
 
 Next.js 14 App Router + TypeScript (strict) + Tailwind CSS 3 currency converter.
@@ -21,8 +29,26 @@ Entry point `app/page.tsx` is a `'use client'` component composing presentationa
 
 1. `useExchangeRates` fetches `/api/rates` once on mount.
 2. `useConverter(exchangeRates)` auto-converts on any input change.
-3. Math: `convertCurrency(amount, fromRate, toRate)` — divide by `fromRate`, multiply by `toRate`.
+3. Math: `convertCurrency(amount, fromRate, toRate)` — divide by `fromRate`, multiply by `toRate`. Base currency is always USD.
 4. On success → `saveConversion()` writes to `localStorage`, then `getConversionHistory()` refreshes state, then `updateURL()` syncs query params.
+
+### URL State Management
+
+All conversion parameters sync to URL using `useSearchParams`:
+
+```typescript
+// Pattern for URL sync in custom hooks
+const updateURL = useCallback(
+  (amt: string, from: string, to: string) => {
+    const params = new URLSearchParams();
+    params.set("amount", amt);
+    params.set("from", from);
+    params.set("to", to);
+    router.push(`?${params.toString()}`, { scroll: false });
+  },
+  [router],
+);
+```
 
 ## Conventions
 
@@ -51,6 +77,27 @@ Jest 30 + Testing Library + `jest-axe`. Config: `jest.config.js` (via `next/jest
 - Coverage: `components/`, `hooks/`, `utils/`, `app/` (excluding `layout.tsx` and type files).
 - Commands: `npm test`, `npm run test:watch`, `npm run test:coverage`, `npm run test:ci`.
 
+### Testing Philosophy
+
+- **Test behavior, not implementation**: Focus on what the component does, not how it does it.
+- **Test user interactions**: Simulate real user behavior (clicks, typing, form submissions).
+- **Test edge cases**: Empty states, error states, loading states, boundary conditions.
+- **Use descriptive test names**: Tests should read like specifications.
+
+### Testing Best Practices
+
+- **Don't test styles**: Avoid asserting specific CSS classes or inline styles. Styles change frequently and are better validated visually.
+  - **Exception**: Only test classes when they affect functionality (e.g., `disabled` state, visibility toggles, or accessibility attributes like `aria-*`).
+- **Don't use `container.querySelector`**: Use Testing Library queries instead (`getByRole`, `getByLabelText`, etc.) if possible.
+- **Don't test implementation details**: Avoid testing internal state variable names or private functions.
+- **Do test error boundaries**: Ensure error states render correctly.
+
+### Mock Strategy
+
+- Global fetch mocking for API routes (not MSW in current setup).
+- Jest mocks for Next.js navigation in `jest.setup.ts`.
+- Component props mocking with complete default objects.
+
 ## Critical Gotchas
 
 - **Never hard-code currency lists** — always import `CURRENCIES` from `utils/currency/currency`.
@@ -60,8 +107,29 @@ Jest 30 + Testing Library + `jest-axe`. Config: `jest.config.js` (via `next/jest
 - **Do not weaken caching headers** in the API route — they are critical for production.
 - **`localStorage` SSR guards** — all storage helpers already check `typeof window !== 'undefined'`. Preserve this pattern.
 
-## Session Management
+## Development Workflows
 
-- For multi-step tasks, create a todo list and update it as you progress.
-- Before complex work, read relevant source files to build context.
-- Update documentation when you make changes that affect documentation.
+### Key Commands
+
+```bash
+npm run dev          # Development server
+npm run test:watch   # Test development
+npm run test:coverage # Coverage reports
+npm run build        # Production build
+```
+
+### Currency Data
+
+Supported currencies defined in `utils/currency.ts` as `CURRENCIES` array. To add currencies:
+
+1. Add to `CURRENCIES` array with code/name/symbol
+2. Ensure API supports the currency code
+3. Update tests with new currency in mock data
+
+### Storage Pattern
+
+LocalStorage utilities in `utils/storage.ts`:
+
+- History limited to 10 items (FIFO)
+- Timestamps for chronological ordering
+- Error handling for storage quota/privacy mode
