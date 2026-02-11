@@ -59,9 +59,9 @@ const updateURL = useCallback(
   - **Presentational only** — props in, JSX out. No `useEffect`, no data fetching, no direct `localStorage` access, only do it if necessary and you think it's better.
   - Tailwind utility-first, no CSS modules. Mobile-first responsive (`sm:`, `lg:`).
   - Interactive elements need `aria-label` (see `SwapButton.tsx`).
-  - Import components directly (e.g., `import { SwapButton } from '@/components/SwapButton/SwapButton'`) — do not import via barrel `index.ts` (it's deprecated).
+  - Import components directly (e.g., `import { SwapButton } from '@/components/SwapButton'`) — do not import via barrel `index.ts` (it's deprecated).
 - **Hooks/utils**: Named exports only — default exports are **deprecated**.
-- **Imports**: Always use `@/` alias (e.g., `import { CURRENCIES } from '@/utils/currency/currency'`).
+- **Imports**: Always use `@/` alias (e.g., `import { CURRENCIES } from '@/utils/currency'`).
 - **Types**: Strict mode; avoid `any` — use interfaces from `types/index.ts`.
 - **Numbers**: Use `formatAmount(value, decimals?)` — never raw `.toFixed()` in components.
 - **State**: URL is the source of truth for conversion params. `useState` only for UI concerns (e.g., `showHistory`). No global state library. Suggest utilizing proper state manager only if we need to share complex state across many components.
