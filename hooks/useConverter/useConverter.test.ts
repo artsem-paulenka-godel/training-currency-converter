@@ -4,6 +4,24 @@ import { ExchangeRates } from "@/types";
 import * as storage from "@/utils/storage/storage";
 import * as nextNavigation from "next/navigation";
 
+jest.mock("next/navigation", () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+      back: jest.fn(),
+      pathname: "/",
+      query: {},
+      asPath: "/",
+    };
+  },
+  useSearchParams: jest.fn(),
+  usePathname() {
+    return "/";
+  },
+}));
+
 // Mock the storage functions
 jest.mock("@/utils/storage/storage");
 
@@ -23,6 +41,9 @@ describe("useConverter", () => {
     jest.clearAllMocks();
     localStorage.clear();
     (storage.getConversionHistory as jest.Mock).mockReturnValue([]);
+    (nextNavigation.useSearchParams as jest.Mock).mockReturnValue({
+      get: jest.fn().mockReturnValue(null),
+    });
   });
 
   it("should initialize with default values", () => {
@@ -36,25 +57,22 @@ describe("useConverter", () => {
   });
 
   it("should normalize equal currencies from URL params", async () => {
-    const searchParamsSpy = jest
-      .spyOn(nextNavigation, "useSearchParams")
-      .mockReturnValue({
-        get: (key: string) => {
-          if (key === "amount") return "5";
-          if (key === "from") return "USD";
-          if (key === "to") return "USD";
-          return null;
-        },
-      } as unknown as ReturnType<typeof nextNavigation.useSearchParams>);
+    (nextNavigation.useSearchParams as jest.Mock).mockReturnValue({
+      get: (key: string) => {
+        if (key === "amount") return "5";
+        if (key === "from") return "EUR";
+        if (key === "to") return "EUR";
+        return null;
+      },
+    });
 
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     await waitFor(() => {
-      expect(result.current.fromCurrency).toBe("USD");
-      expect(result.current.toCurrency).not.toBe("USD");
+      expect(result.current.amount).toBe("5");
+      expect(result.current.fromCurrency).toBe("EUR");
+      expect(result.current.toCurrency).not.toBe("EUR");
     });
-
-    searchParamsSpy.mockRestore();
   });
 
   it("should update amount", () => {

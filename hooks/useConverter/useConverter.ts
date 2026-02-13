@@ -12,6 +12,13 @@ import {
 } from "@/utils/storage/storage";
 import { ConversionResult, ExchangeRates } from "@/types";
 
+const getAlternateCurrency = (currencyCode: string) => {
+  const fallback = CURRENCIES.find(
+    (currency) => currency.code !== currencyCode,
+  );
+  return fallback ? fallback.code : currencyCode;
+};
+
 export function useConverter(exchangeRates: ExchangeRates | null) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,13 +33,6 @@ export function useConverter(exchangeRates: ExchangeRates | null) {
   const urlAmount = searchParams.get("amount");
   const urlFrom = searchParams.get("from");
   const urlTo = searchParams.get("to");
-
-  const getAlternateCurrency = (currencyCode: string) => {
-    const fallback = CURRENCIES.find(
-      (currency) => currency.code !== currencyCode,
-    );
-    return fallback ? fallback.code : currencyCode;
-  };
 
   // Initialize from URL parameters
   useEffect(() => {
