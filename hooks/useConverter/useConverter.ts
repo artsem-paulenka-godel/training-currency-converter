@@ -1,43 +1,55 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { CURRENCIES, validateAmount, convertCurrency } from '@/utils/currency';
-import { saveConversion, getConversionHistory, clearConversionHistory as clearStorage } from '@/utils/storage';
-import { ConversionResult, ExchangeRates } from '@/types';
+import { useState, useEffect, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  CURRENCIES,
+  validateAmount,
+  convertCurrency,
+} from "@/utils/currency/currency";
+import {
+  saveConversion,
+  getConversionHistory,
+  clearConversionHistory as clearStorage,
+} from "@/utils/storage/storage";
+import { ConversionResult, ExchangeRates } from "@/types";
 
 export function useConverter(exchangeRates: ExchangeRates | null) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [amount, setAmount] = useState<string>('1');
-  const [fromCurrency, setFromCurrency] = useState<string>('USD');
-  const [toCurrency, setToCurrency] = useState<string>('EUR');
+  const [amount, setAmount] = useState<string>("1");
+  const [fromCurrency, setFromCurrency] = useState<string>("USD");
+  const [toCurrency, setToCurrency] = useState<string>("EUR");
   const [result, setResult] = useState<number | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [history, setHistory] = useState<ConversionResult[]>([]);
 
   // Initialize from URL parameters
   useEffect(() => {
-    const urlAmount = searchParams.get('amount');
-    const urlFrom = searchParams.get('from');
-    const urlTo = searchParams.get('to');
+    const urlAmount = searchParams.get("amount");
+    const urlFrom = searchParams.get("from");
+    const urlTo = searchParams.get("to");
 
     if (urlAmount) {
       setAmount(urlAmount);
     }
-    if (urlFrom && CURRENCIES.find(c => c.code === urlFrom)) setFromCurrency(urlFrom);
-    if (urlTo && CURRENCIES.find(c => c.code === urlTo)) setToCurrency(urlTo);
+    if (urlFrom && CURRENCIES.find((c) => c.code === urlFrom))
+      setFromCurrency(urlFrom);
+    if (urlTo && CURRENCIES.find((c) => c.code === urlTo)) setToCurrency(urlTo);
 
     setHistory(getConversionHistory());
   }, [searchParams]);
 
   // Update URL parameters
-  const updateURL = useCallback((amt: string, from: string, to: string) => {
-    const params = new URLSearchParams();
-    params.set('amount', amt);
-    params.set('from', from);
-    params.set('to', to);
-    router.push(`?${params.toString()}`, { scroll: false });
-  }, [router]);
+  const updateURL = useCallback(
+    (amt: string, from: string, to: string) => {
+      const params = new URLSearchParams();
+      params.set("amount", amt);
+      params.set("from", from);
+      params.set("to", to);
+      router.push(`?${params.toString()}`, { scroll: false });
+    },
+    [router],
+  );
 
   // Perform conversion
   const performConversion = useCallback(() => {
@@ -81,7 +93,7 @@ export function useConverter(exchangeRates: ExchangeRates | null) {
 
       updateURL(amount, fromCurrency, toCurrency);
     } catch (err: any) {
-      console.error('Conversion error:', err);
+      console.error("Conversion error:", err);
     }
   }, [amount, fromCurrency, toCurrency, exchangeRates, updateURL]);
 

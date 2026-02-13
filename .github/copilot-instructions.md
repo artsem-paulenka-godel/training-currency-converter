@@ -15,15 +15,15 @@ Entry point `app/page.tsx` is a `'use client'` component composing presentationa
 
 ## Architecture
 
-| Layer | Key files                   | Notes                                                                                                                                                                                           |
-| ----- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| API   | `app/api/rates/route.ts`    | Fetches `frankfurter.app`, falls back to `MOCK_RATES`. 1-hour cache (`revalidate=3600`, `s-maxage=3600`). 10s `AbortController` timeout. Response: `{ success, data?: ExchangeRates, error? }`. |
-| Hooks | `hooks/useExchangeRates.ts` | Fetch + loading/error state; `isMounted` guard.                                                                                                                                                 |
-| Hooks | `hooks/useConverter.ts`     | Validates, converts, syncs URL (`?amount=&from=&to=`) via `router.push({ scroll: false })`, writes history to `localStorage`.                                                                   |
-| Utils | `utils/currency`            | **`CURRENCIES` is the single source of truth** for supported codes. Also: `convertCurrency`, `validateAmount`, `formatAmount`, `getCurrencyByCode`.                                             |
-| Utils | `utils/storage.ts`          | `localStorage` helpers; max 10 items, newest-first. All check `typeof window !== 'undefined'` for SSR safety.                                                                                   |
-| Types | `types/index.ts`            | `Currency`, `ExchangeRates`, `ConversionResult`, `ConversionHistory`, `ApiResponse`.                                                                                                            |
-| UI    | `components/`               | Presentational only — props in, JSX out. Folder-per-component with co-located tests (flat files are deprecated).                                                                                |
+| Layer | Key files                                    | Notes                                                                                                                                                                                           |
+| ----- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API   | `app/api/rates/route.ts`                     | Fetches `frankfurter.app`, falls back to `MOCK_RATES`. 1-hour cache (`revalidate=3600`, `s-maxage=3600`). 10s `AbortController` timeout. Response: `{ success, data?: ExchangeRates, error? }`. |
+| Hooks | `hooks/useExchangeRates/useExchangeRates.ts` | Fetch + loading/error state; `isMounted` guard.                                                                                                                                                 |
+| Hooks | `hooks/useConverter/useConverter.ts`         | Validates, converts, syncs URL (`?amount=&from=&to=`) via `router.push({ scroll: false })`, writes history to `localStorage`.                                                                   |
+| Utils | `utils/currency/currency.ts`                 | **`CURRENCIES` is the single source of truth** for supported codes. Also: `convertCurrency`, `validateAmount`, `formatAmount`, `getCurrencyByCode`.                                             |
+| Utils | `utils/storage/storage.ts`                   | `localStorage` helpers; max 10 items, newest-first. All check `typeof window !== 'undefined'` for SSR safety.                                                                                   |
+| Types | `types/index.ts`                             | `Currency`, `ExchangeRates`, `ConversionResult`, `ConversionHistory`, `ApiResponse`.                                                                                                            |
+| UI    | `components/`                                | Presentational only — props in, JSX out. Folder-per-component with co-located tests (flat files are deprecated).                                                                                |
 
 ## Data Flow
 
@@ -61,7 +61,7 @@ const updateURL = useCallback(
   - Interactive elements need `aria-label` (see `SwapButton.tsx`).
   - Import components directly (e.g., `import { SwapButton } from '@/components/SwapButton'`) — do not import via barrel `index.ts` (it's deprecated).
 - **Hooks/utils**: Named exports only — default exports are **deprecated**.
-- **Imports**: Always use `@/` alias (e.g., `import { CURRENCIES } from '@/utils/currency'`).
+- **Imports**: Always use `@/` alias (e.g., `import { CURRENCIES } from '@/utils/currency/currency'`).
 - **Types**: Strict mode; avoid `any` — use interfaces from `types/index.ts`.
 - **Numbers**: Use `formatAmount(value, decimals?)` — never raw `.toFixed()` in components.
 - **State**: URL is the source of truth for conversion params. `useState` only for UI concerns (e.g., `showHistory`). No global state library. Suggest utilizing proper state manager only if we need to share complex state across many components.
@@ -100,7 +100,7 @@ Jest 30 + Testing Library + `jest-axe`. Config: `jest.config.js` (via `next/jest
 
 ## Critical Gotchas
 
-- **Never hard-code currency lists** — always import `CURRENCIES` from `@/utils/currency`.
+- **Never hard-code currency lists** — always import `CURRENCIES` from `@/utils/currency/currency`.
 - **Keep URL params in sync** — if you change conversion inputs, update `updateURL` in `useConverter`.
 - **`reactStrictMode: false`** in `next.config.js` — effects fire once in dev.
 - **`jest.setup.ts` mocks**: `console.error`/`console.warn` suppressed globally (restore in test if asserting). `useSearchParams().get` returns `null` by default (override per-test). `localStorage` is an in-memory mock.
@@ -120,7 +120,7 @@ npm run build        # Production build
 
 ### Currency Data
 
-Supported currencies defined in `utils/currency.ts` as `CURRENCIES` array. To add currencies:
+Supported currencies defined in `utils/currency/currency.ts` as `CURRENCIES` array. To add currencies:
 
 1. Add to `CURRENCIES` array with code/name/symbol
 2. Ensure API supports the currency code
@@ -128,7 +128,7 @@ Supported currencies defined in `utils/currency.ts` as `CURRENCIES` array. To ad
 
 ### Storage Pattern
 
-LocalStorage utilities in `utils/storage.ts`:
+LocalStorage utilities in `utils/storage/storage.ts`:
 
 - History limited to 10 items (FIFO)
 - Timestamps for chronological ordering

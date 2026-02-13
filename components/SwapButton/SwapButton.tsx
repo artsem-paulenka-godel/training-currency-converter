@@ -2,7 +2,7 @@ interface SwapButtonProps {
   onClick: () => void;
 }
 
-export default function SwapButton({ onClick }: SwapButtonProps) {
+export function SwapButton({ onClick }: SwapButtonProps) {
   return (
     <button
       onClick={onClick}

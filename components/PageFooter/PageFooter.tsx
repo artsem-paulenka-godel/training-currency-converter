@@ -2,7 +2,7 @@ interface PageFooterProps {
   lastUpdated?: number;
 }
 
-export default function PageFooter({ lastUpdated }: PageFooterProps) {
+export function PageFooter({ lastUpdated }: PageFooterProps) {
   return (
     <div className="text-center mt-8 text-gray-600 text-sm">
       <p>Exchange rates are updated hourly</p>

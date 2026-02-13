@@ -5,7 +5,12 @@ interface AmountInputProps {
   label?: string;
 }
 
-export default function AmountInput({ value, onChange, error, label }: AmountInputProps) {
+export function AmountInput({
+  value,
+  onChange,
+  error,
+  label,
+}: AmountInputProps) {
   return (
     <div className="flex-1 w-full sm:w-auto">
       {label && (
@@ -21,7 +26,7 @@ export default function AmountInput({ value, onChange, error, label }: AmountInp
         step="1"
         min="0"
         className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none text-lg transition-colors ${
-          error ? 'border-red-300 focus:ring-red-500' : 'border-gray-300'
+          error ? "border-red-300 focus:ring-red-500" : "border-gray-300"
         }`}
       />
     </div>

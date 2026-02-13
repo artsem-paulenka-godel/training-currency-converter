@@ -21,8 +21,8 @@ applyTo: "**/*.test.ts,**/*.test.tsx"
 
 ## Imports & Types
 
-- **Always** use `@/` path alias for imports (e.g., `import { CURRENCIES } from '@/utils/currency'`)
-- Never hard-code currency lists — import `CURRENCIES` from `@/utils/currency`
+- **Always** use `@/` path alias for imports (e.g., `import { CURRENCIES } from '@/utils/currency/currency'`)
+- Never hard-code currency lists — import `CURRENCIES` from `@/utils/currency/currency`
 - Use interfaces from `@/types` (e.g., `ExchangeRates`, `ConversionResult`)
 
 ## User Interactions
