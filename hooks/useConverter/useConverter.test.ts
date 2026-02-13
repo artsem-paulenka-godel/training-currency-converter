@@ -2,6 +2,7 @@ import { renderHook, act, waitFor } from "@testing-library/react";
 import { useConverter } from "@/hooks/useConverter/useConverter";
 import { ExchangeRates } from "@/types";
 import * as storage from "@/utils/storage/storage";
+import * as nextNavigation from "next/navigation";
 
 // Mock the storage functions
 jest.mock("@/utils/storage/storage");
@@ -32,6 +33,28 @@ describe("useConverter", () => {
     expect(result.current.toCurrency).toBe("EUR");
     expect(result.current.result).toBe(null);
     expect(result.current.validationError).toBe(null);
+  });
+
+  it("should normalize equal currencies from URL params", async () => {
+    const searchParamsSpy = jest
+      .spyOn(nextNavigation, "useSearchParams")
+      .mockReturnValue({
+        get: (key: string) => {
+          if (key === "amount") return "5";
+          if (key === "from") return "USD";
+          if (key === "to") return "USD";
+          return null;
+        },
+      } as unknown as ReturnType<typeof nextNavigation.useSearchParams>);
+
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    await waitFor(() => {
+      expect(result.current.fromCurrency).toBe("USD");
+      expect(result.current.toCurrency).toBe("EUR");
+    });
+
+    searchParamsSpy.mockRestore();
   });
 
   it("should update amount", () => {
@@ -102,6 +125,28 @@ describe("useConverter", () => {
 
     act(() => {
       result.current.handleSwap();
+    });
+
+    expect(result.current.fromCurrency).toBe("EUR");
+    expect(result.current.toCurrency).toBe("USD");
+  });
+
+  it("should swap when setting to currency equal to from currency", () => {
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    act(() => {
+      result.current.setToCurrency("USD");
+    });
+
+    expect(result.current.fromCurrency).toBe("EUR");
+    expect(result.current.toCurrency).toBe("USD");
+  });
+
+  it("should swap when setting from currency equal to to currency", () => {
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    act(() => {
+      result.current.setFromCurrency("EUR");
     });
 
     expect(result.current.fromCurrency).toBe("EUR");

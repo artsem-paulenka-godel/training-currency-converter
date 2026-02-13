@@ -17,27 +17,49 @@ export function useConverter(exchangeRates: ExchangeRates | null) {
   const searchParams = useSearchParams();
 
   const [amount, setAmount] = useState<string>("1");
-  const [fromCurrency, setFromCurrency] = useState<string>("USD");
-  const [toCurrency, setToCurrency] = useState<string>("EUR");
+  const [fromCurrency, setFromCurrencyState] = useState<string>("USD");
+  const [toCurrency, setToCurrencyState] = useState<string>("EUR");
   const [result, setResult] = useState<number | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [history, setHistory] = useState<ConversionResult[]>([]);
 
+  const urlAmount = searchParams.get("amount");
+  const urlFrom = searchParams.get("from");
+  const urlTo = searchParams.get("to");
+
+  const getAlternateCurrency = (currencyCode: string) => {
+    const fallback = CURRENCIES.find(
+      (currency) => currency.code !== currencyCode,
+    );
+    return fallback ? fallback.code : currencyCode;
+  };
+
   // Initialize from URL parameters
   useEffect(() => {
-    const urlAmount = searchParams.get("amount");
-    const urlFrom = searchParams.get("from");
-    const urlTo = searchParams.get("to");
-
     if (urlAmount) {
       setAmount(urlAmount);
     }
-    if (urlFrom && CURRENCIES.find((c) => c.code === urlFrom))
-      setFromCurrency(urlFrom);
-    if (urlTo && CURRENCIES.find((c) => c.code === urlTo)) setToCurrency(urlTo);
+
+    let nextFrom = "USD";
+    let nextTo = "EUR";
+
+    if (urlFrom && CURRENCIES.find((currency) => currency.code === urlFrom)) {
+      nextFrom = urlFrom;
+    }
+
+    if (urlTo && CURRENCIES.find((currency) => currency.code === urlTo)) {
+      nextTo = urlTo;
+    }
+
+    if (nextFrom === nextTo) {
+      nextTo = getAlternateCurrency(nextFrom);
+    }
+
+    setFromCurrencyState(nextFrom);
+    setToCurrencyState(nextTo);
 
     setHistory(getConversionHistory());
-  }, [searchParams]);
+  }, [urlAmount, urlFrom, urlTo]);
 
   // Update URL parameters
   const updateURL = useCallback(
@@ -92,8 +114,9 @@ export function useConverter(exchangeRates: ExchangeRates | null) {
       setHistory(getConversionHistory());
 
       updateURL(amount, fromCurrency, toCurrency);
-    } catch (err: any) {
-      console.error("Conversion error:", err);
+    } catch (err: unknown) {
+      const errorToLog = err instanceof Error ? err : String(err);
+      console.error("Conversion error:", errorToLog);
     }
   }, [amount, fromCurrency, toCurrency, exchangeRates, updateURL]);
 
@@ -114,15 +137,43 @@ export function useConverter(exchangeRates: ExchangeRates | null) {
   }, [amount, fromCurrency, toCurrency, exchangeRates, performConversion]);
 
   const handleSwap = useCallback(() => {
-    setFromCurrency(toCurrency);
-    setToCurrency(fromCurrency);
+    setFromCurrencyState(toCurrency);
+    setToCurrencyState(fromCurrency);
   }, [fromCurrency, toCurrency]);
 
   const loadFromHistory = useCallback((conversion: ConversionResult) => {
     setAmount(conversion.amount.toString());
-    setFromCurrency(conversion.from);
-    setToCurrency(conversion.to);
+    setFromCurrencyState(conversion.from);
+    setToCurrencyState(conversion.to);
   }, []);
+
+  const setFromCurrency = useCallback(
+    (currency: string) => {
+      setFromCurrencyState((previousFrom) => {
+        if (currency === toCurrency) {
+          setToCurrencyState(previousFrom);
+          return currency;
+        }
+
+        return currency;
+      });
+    },
+    [toCurrency],
+  );
+
+  const setToCurrency = useCallback(
+    (currency: string) => {
+      setToCurrencyState((previousTo) => {
+        if (currency === fromCurrency) {
+          setFromCurrencyState(previousTo);
+          return currency;
+        }
+
+        return currency;
+      });
+    },
+    [fromCurrency],
+  );
 
   const clearConversionHistory = useCallback(() => {
     clearStorage();
