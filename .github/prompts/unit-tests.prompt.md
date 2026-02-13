@@ -54,7 +54,7 @@ describe("MyComponent", () => {
 
 ## Reference Files
 
-- Component tests: `components/AmountInput.test.tsx`, `components/ConverterForm.test.tsx`
-- Hook tests: `hooks/useConverter.test.ts`, `hooks/useExchangeRates.test.ts`
-- Utility tests: `utils/currency.test.ts`, `utils/storage.test.ts`
+- Component tests: `components/AmountInput/AmountInput.test.tsx`, `components/ConverterForm/ConverterForm.test.tsx`
+- Hook tests: `hooks/useConverter/useConverter.test.ts`, `hooks/useExchangeRates/useExchangeRates.test.ts`
+- Utility tests: `utils/currency/currency.test.ts`, `utils/storage/storage.test.ts`
 - Test setup: `jest.setup.ts`

@@ -23,7 +23,7 @@ applyTo: "**/*.tsx"
 - Destructure props in function signature
 - Use `jest.fn()` for callback props in tests
 - Provide sensible defaults where appropriate
-- All currency data must come from `CURRENCIES` in `@/utils/currency`
+- All currency data must come from `CURRENCIES` in `@/utils/currency/currency`
 
 ## Accessibility
 
@@ -47,5 +47,5 @@ applyTo: "**/*.tsx"
 
 ## Numbers & Formatting
 
-- Always use `formatAmount(value, decimals?)` from `@/utils/currency` — never raw `.toFixed()`
+- Always use `formatAmount(value, decimals?)` from `@/utils/currency/currency` — never raw `.toFixed()`
 - Currency codes come from `CURRENCIES` constant — never hard-code lists

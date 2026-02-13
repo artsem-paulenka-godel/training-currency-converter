@@ -2,26 +2,26 @@ import {
   getConversionHistory,
   saveConversion,
   clearConversionHistory,
-} from './storage';
-import { ConversionResult } from '@/types';
+} from "@/utils/storage/storage";
+import { ConversionResult } from "@/types";
 
-describe('storage utils', () => {
+describe("storage utils", () => {
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
     jest.clearAllMocks();
   });
 
-  describe('getConversionHistory', () => {
-    it('should return empty array when no history exists', () => {
+  describe("getConversionHistory", () => {
+    it("should return empty array when no history exists", () => {
       const history = getConversionHistory();
       expect(history).toEqual([]);
     });
 
-    it('should return stored conversion history', () => {
+    it("should return stored conversion history", () => {
       const mockConversion: ConversionResult = {
-        from: 'USD',
-        to: 'EUR',
+        from: "USD",
+        to: "EUR",
         amount: 100,
         result: 85,
         rate: 0.85,
@@ -29,35 +29,35 @@ describe('storage utils', () => {
       };
 
       localStorage.setItem(
-        'currency_converter_history',
-        JSON.stringify({ conversions: [mockConversion] })
+        "currency_converter_history",
+        JSON.stringify({ conversions: [mockConversion] }),
       );
 
       const history = getConversionHistory();
       expect(history).toEqual([mockConversion]);
     });
 
-    it('should handle corrupted data gracefully', () => {
-      localStorage.setItem('currency_converter_history', 'invalid json');
-      
+    it("should handle corrupted data gracefully", () => {
+      localStorage.setItem("currency_converter_history", "invalid json");
+
       const history = getConversionHistory();
       expect(history).toEqual([]);
       expect(console.error).toHaveBeenCalled();
     });
 
-    it('should return empty array when conversions property is missing', () => {
-      localStorage.setItem('currency_converter_history', '{}');
-      
+    it("should return empty array when conversions property is missing", () => {
+      localStorage.setItem("currency_converter_history", "{}");
+
       const history = getConversionHistory();
       expect(history).toEqual([]);
     });
   });
 
-  describe('saveConversion', () => {
-    it('should save conversion to localStorage', () => {
+  describe("saveConversion", () => {
+    it("should save conversion to localStorage", () => {
       const conversion: ConversionResult = {
-        from: 'USD',
-        to: 'EUR',
+        from: "USD",
+        to: "EUR",
         amount: 100,
         result: 85,
         rate: 0.85,
@@ -66,18 +66,18 @@ describe('storage utils', () => {
 
       saveConversion(conversion);
 
-      const stored = localStorage.getItem('currency_converter_history');
+      const stored = localStorage.getItem("currency_converter_history");
       expect(stored).toBeTruthy();
-      
+
       const parsed = JSON.parse(stored!);
       expect(parsed.conversions).toHaveLength(1);
       expect(parsed.conversions[0]).toEqual(conversion);
     });
 
-    it('should add new conversions at the beginning', () => {
+    it("should add new conversions at the beginning", () => {
       const conversion1: ConversionResult = {
-        from: 'USD',
-        to: 'EUR',
+        from: "USD",
+        to: "EUR",
         amount: 100,
         result: 85,
         rate: 0.85,
@@ -85,8 +85,8 @@ describe('storage utils', () => {
       };
 
       const conversion2: ConversionResult = {
-        from: 'GBP',
-        to: 'USD',
+        from: "GBP",
+        to: "USD",
         amount: 50,
         result: 65,
         rate: 1.3,
@@ -101,12 +101,12 @@ describe('storage utils', () => {
       expect(history[1]).toEqual(conversion1);
     });
 
-    it('should limit history to MAX_HISTORY_ITEMS (10)', () => {
+    it("should limit history to MAX_HISTORY_ITEMS (10)", () => {
       // Add 15 conversions
       for (let i = 0; i < 15; i++) {
         const conversion: ConversionResult = {
-          from: 'USD',
-          to: 'EUR',
+          from: "USD",
+          to: "EUR",
           amount: i,
           result: i * 0.85,
           rate: 0.85,
@@ -117,22 +117,22 @@ describe('storage utils', () => {
 
       const history = getConversionHistory();
       expect(history).toHaveLength(10);
-      
+
       // Should keep the most recent 10
       expect(history[0].timestamp).toBe(14);
       expect(history[9].timestamp).toBe(5);
     });
 
-    it('should handle localStorage errors gracefully', () => {
+    it("should handle localStorage errors gracefully", () => {
       // Mock localStorage.setItem to throw an error
-      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+      const setItemSpy = jest.spyOn(Storage.prototype, "setItem");
       setItemSpy.mockImplementation(() => {
-        throw new Error('Storage quota exceeded');
+        throw new Error("Storage quota exceeded");
       });
 
       const conversion: ConversionResult = {
-        from: 'USD',
-        to: 'EUR',
+        from: "USD",
+        to: "EUR",
         amount: 100,
         result: 85,
         rate: 0.85,
@@ -146,11 +146,11 @@ describe('storage utils', () => {
     });
   });
 
-  describe('clearConversionHistory', () => {
-    it('should clear all conversion history', () => {
+  describe("clearConversionHistory", () => {
+    it("should clear all conversion history", () => {
       const conversion: ConversionResult = {
-        from: 'USD',
-        to: 'EUR',
+        from: "USD",
+        to: "EUR",
         amount: 100,
         result: 85,
         rate: 0.85,
@@ -164,10 +164,10 @@ describe('storage utils', () => {
       expect(getConversionHistory()).toHaveLength(0);
     });
 
-    it('should handle errors gracefully', () => {
-      const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
+    it("should handle errors gracefully", () => {
+      const removeItemSpy = jest.spyOn(Storage.prototype, "removeItem");
       removeItemSpy.mockImplementation(() => {
-        throw new Error('Failed to remove item');
+        throw new Error("Failed to remove item");
       });
 
       // Should not throw - the function catches the error internally
@@ -176,7 +176,7 @@ describe('storage utils', () => {
       removeItemSpy.mockRestore();
     });
 
-    it('should work even when no history exists', () => {
+    it("should work even when no history exists", () => {
       expect(() => clearConversionHistory()).not.toThrow();
       expect(getConversionHistory()).toHaveLength(0);
     });

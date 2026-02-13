@@ -1,4 +1,4 @@
-import { CURRENCIES, formatAmount } from '@/utils/currency';
+import { CURRENCIES, formatAmount } from "@/utils/currency/currency";
 
 interface ConversionResultProps {
   result: number | null;
@@ -7,15 +7,15 @@ interface ConversionResultProps {
   rate: number | null;
 }
 
-export default function ConversionResult({ 
-  result, 
-  fromCurrency, 
-  toCurrency, 
-  rate 
+export function ConversionResult({
+  result,
+  fromCurrency,
+  toCurrency,
+  rate,
 }: ConversionResultProps) {
   if (result === null) return null;
 
-  const toCurrencyData = CURRENCIES.find(c => c.code === toCurrency);
+  const toCurrencyData = CURRENCIES.find((c) => c.code === toCurrency);
 
   return (
     <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">

@@ -1,13 +1,13 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import { useConverter } from './useConverter';
-import { ExchangeRates } from '@/types';
-import * as storage from '@/utils/storage';
+import { renderHook, act, waitFor } from "@testing-library/react";
+import { useConverter } from "@/hooks/useConverter/useConverter";
+import { ExchangeRates } from "@/types";
+import * as storage from "@/utils/storage/storage";
 
 // Mock the storage functions
-jest.mock('@/utils/storage');
+jest.mock("@/utils/storage/storage");
 
 const mockExchangeRates: ExchangeRates = {
-  base: 'USD',
+  base: "USD",
   rates: {
     USD: 1,
     EUR: 0.85,
@@ -17,38 +17,38 @@ const mockExchangeRates: ExchangeRates = {
   timestamp: Date.now(),
 };
 
-describe('useConverter', () => {
+describe("useConverter", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
     (storage.getConversionHistory as jest.Mock).mockReturnValue([]);
   });
 
-  it('should initialize with default values', () => {
+  it("should initialize with default values", () => {
     const { result } = renderHook(() => useConverter(null));
 
-    expect(result.current.amount).toBe('1');
-    expect(result.current.fromCurrency).toBe('USD');
-    expect(result.current.toCurrency).toBe('EUR');
+    expect(result.current.amount).toBe("1");
+    expect(result.current.fromCurrency).toBe("USD");
+    expect(result.current.toCurrency).toBe("EUR");
     expect(result.current.result).toBe(null);
     expect(result.current.validationError).toBe(null);
   });
 
-  it('should update amount', () => {
+  it("should update amount", () => {
     const { result } = renderHook(() => useConverter(null));
 
     act(() => {
-      result.current.setAmount('100');
+      result.current.setAmount("100");
     });
 
-    expect(result.current.amount).toBe('100');
+    expect(result.current.amount).toBe("100");
   });
 
-  it('should perform conversion when exchange rates are available', async () => {
+  it("should perform conversion when exchange rates are available", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
-      result.current.setAmount('100');
+      result.current.setAmount("100");
     });
 
     await waitFor(() => {
@@ -57,7 +57,7 @@ describe('useConverter', () => {
     expect(result.current.validationError).toBe(null);
   });
 
-  it('should validate amount before conversion', async () => {
+  it("should validate amount before conversion", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     // First wait for initial conversion to complete
@@ -66,53 +66,53 @@ describe('useConverter', () => {
     });
 
     act(() => {
-      result.current.setAmount('');
+      result.current.setAmount("");
     });
 
     await waitFor(
       () => {
-        expect(result.current.validationError).toBe('Please enter an amount');
+        expect(result.current.validationError).toBe("Please enter an amount");
         expect(result.current.result).toBe(null);
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     );
   });
 
-  it('should reject negative amounts', async () => {
+  it("should reject negative amounts", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
-      result.current.setAmount('-10');
+      result.current.setAmount("-10");
     });
 
     await waitFor(() => {
       expect(result.current.validationError).toBe(
-        'Amount must be greater than zero'
+        "Amount must be greater than zero",
       );
     });
   });
 
-  it('should swap currencies', () => {
+  it("should swap currencies", () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
-      result.current.setFromCurrency('USD');
-      result.current.setToCurrency('EUR');
+      result.current.setFromCurrency("USD");
+      result.current.setToCurrency("EUR");
     });
 
     act(() => {
       result.current.handleSwap();
     });
 
-    expect(result.current.fromCurrency).toBe('EUR');
-    expect(result.current.toCurrency).toBe('USD');
+    expect(result.current.fromCurrency).toBe("EUR");
+    expect(result.current.toCurrency).toBe("USD");
   });
 
-  it('should save conversion to history', async () => {
+  it("should save conversion to history", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
-      result.current.setAmount('100');
+      result.current.setAmount("100");
     });
 
     await waitFor(() => {
@@ -121,21 +121,21 @@ describe('useConverter', () => {
 
     expect(storage.saveConversion).toHaveBeenCalledWith(
       expect.objectContaining({
-        from: 'USD',
-        to: 'EUR',
+        from: "USD",
+        to: "EUR",
         amount: 100,
         result: 85,
         rate: 0.85,
-      })
+      }),
     );
   });
 
-  it('should load conversion from history', () => {
+  it("should load conversion from history", () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     const historicalConversion = {
-      from: 'GBP',
-      to: 'JPY',
+      from: "GBP",
+      to: "JPY",
       amount: 50,
       result: 7534.25,
       rate: 150.685,
@@ -146,12 +146,12 @@ describe('useConverter', () => {
       result.current.loadFromHistory(historicalConversion);
     });
 
-    expect(result.current.amount).toBe('50');
-    expect(result.current.fromCurrency).toBe('GBP');
-    expect(result.current.toCurrency).toBe('JPY');
+    expect(result.current.amount).toBe("50");
+    expect(result.current.fromCurrency).toBe("GBP");
+    expect(result.current.toCurrency).toBe("JPY");
   });
 
-  it('should clear conversion history', () => {
+  it("should clear conversion history", () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
@@ -162,13 +162,13 @@ describe('useConverter', () => {
     expect(result.current.history).toEqual([]);
   });
 
-  it('should handle cross-currency conversion', async () => {
+  it("should handle cross-currency conversion", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
-      result.current.setAmount('100');
-      result.current.setFromCurrency('GBP');
-      result.current.setToCurrency('JPY');
+      result.current.setAmount("100");
+      result.current.setFromCurrency("GBP");
+      result.current.setToCurrency("JPY");
     });
 
     await waitFor(() => {
@@ -177,9 +177,9 @@ describe('useConverter', () => {
     });
   });
 
-  it('should handle missing currency rates gracefully', async () => {
+  it("should handle missing currency rates gracefully", async () => {
     const incompleteRates: ExchangeRates = {
-      base: 'USD',
+      base: "USD",
       rates: {
         USD: 1,
         EUR: 0.85,
@@ -195,9 +195,9 @@ describe('useConverter', () => {
     });
 
     act(() => {
-      result.current.setAmount('100');
-      result.current.setFromCurrency('USD');
-      result.current.setToCurrency('GBP');
+      result.current.setAmount("100");
+      result.current.setFromCurrency("USD");
+      result.current.setToCurrency("GBP");
     });
 
     // Wait to ensure no conversion happens
@@ -208,11 +208,11 @@ describe('useConverter', () => {
     expect(result.current.validationError).toBe(null);
   });
 
-  it('should update result when currencies change', async () => {
+  it("should update result when currencies change", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
-      result.current.setAmount('100');
+      result.current.setAmount("100");
     });
 
     await waitFor(() => {
@@ -220,7 +220,7 @@ describe('useConverter', () => {
     });
 
     act(() => {
-      result.current.setToCurrency('GBP');
+      result.current.setToCurrency("GBP");
     });
 
     await waitFor(() => {
@@ -228,11 +228,11 @@ describe('useConverter', () => {
     });
   });
 
-  it('should handle decimal amounts', async () => {
+  it("should handle decimal amounts", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     act(() => {
-      result.current.setAmount('50.50');
+      result.current.setAmount("50.50");
     });
 
     await waitFor(() => {
@@ -240,34 +240,36 @@ describe('useConverter', () => {
     });
   });
 
-  it('should validate amount loaded from URL parameters', async () => {
+  it("should validate amount loaded from URL parameters", async () => {
     // We need to test the validation by setting an invalid amount
     // Since URL params are mocked, we'll test by setting a large amount directly
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     // Simulate loading a too-large amount (like from URL)
     act(() => {
-      result.current.setAmount('10000000000'); // Too large
+      result.current.setAmount("10000000000"); // Too large
     });
 
     await waitFor(() => {
       // Should show validation error for amount that's too large
-      expect(result.current.validationError).toBe('Amount is too large');
+      expect(result.current.validationError).toBe("Amount is too large");
       expect(result.current.result).toBe(null);
     });
   });
 
-  it('should validate negative amount', async () => {
+  it("should validate negative amount", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
     // Simulate setting a negative amount (like from URL)
     act(() => {
-      result.current.setAmount('-100');
+      result.current.setAmount("-100");
     });
 
     await waitFor(() => {
       // Should show validation error for negative amount
-      expect(result.current.validationError).toBe('Amount must be greater than zero');
+      expect(result.current.validationError).toBe(
+        "Amount must be greater than zero",
+      );
       expect(result.current.result).toBe(null);
     });
   });

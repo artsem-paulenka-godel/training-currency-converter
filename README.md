@@ -8,11 +8,11 @@ This repository is a hands-on learning platform for AI-assisted development with
 
 **[→ View all challenges](docs/challenges.md)** | **[📖 Copilot Best Practices](docs/copilot-reference.md)**
 
-| Difficulty | Challenges |
-|------------|-----------|
-| 🟢 Beginner | [Project Creation](docs/1-challenge-project-creation.md), [Copilot Customisation](docs/2-challenge-customisation.md), [Unit Testing](docs/3-challenge-unit-test.md) |
-| 🟡 Intermediate | [Bug Fixing](docs/4-challenge-bug-fix.md), [Feature Development](docs/5-challenge-feature.md), [GitHub Issues](docs/6-challenge-agent-issue.md) |
-| 🔴 Advanced | [Spec-Kit](docs/7-challenge-spec-kit.md), [Optional Advanced](docs/8-challenge-optional-advanced.md) |
+| Difficulty      | Challenges                                                                                                                                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🟢 Beginner     | [Project Creation](docs/1-challenge-project-creation.md), [Copilot Customisation](docs/2-challenge-customisation.md), [Unit Testing](docs/3-challenge-unit-test.md) |
+| 🟡 Intermediate | [Bug Fixing](docs/4-challenge-bug-fix.md), [Feature Development](docs/5-challenge-feature.md), [GitHub Issues](docs/6-challenge-agent-issue.md)                     |
+| 🔴 Advanced     | [Spec-Kit](docs/7-challenge-spec-kit.md), [Optional Advanced](docs/8-challenge-optional-advanced.md)                                                                |
 
 > **Note:** Each branch contains the **completed solution**. Work through challenges using the docs, then check branches to compare your work.
 
@@ -116,11 +116,30 @@ training-currency-converter/
 │   ├── globals.css               # Global styles
 │   ├── layout.tsx                # Root layout
 │   └── page.tsx                  # Main application page
+├── components/
+│   ├── AmountInput/
+│   │   ├── AmountInput.tsx
+│   │   └── AmountInput.test.tsx
+│   ├── ConverterForm/
+│   │   ├── ConverterForm.tsx
+│   │   └── ConverterForm.test.tsx
+│   └── ... (one folder per component)
+├── hooks/
+│   ├── useConverter/
+│   │   ├── useConverter.ts
+│   │   └── useConverter.test.ts
+│   └── useExchangeRates/
+│       ├── useExchangeRates.ts
+│       └── useExchangeRates.test.ts
 ├── types/
 │   └── index.ts                  # TypeScript type definitions
 ├── utils/
-│   ├── currency.ts               # Currency conversion utilities
-│   └── storage.ts                # LocalStorage utilities
+│   ├── currency/
+│   │   ├── currency.ts           # Currency conversion utilities
+│   │   └── currency.test.ts
+│   └── storage/
+│       ├── storage.ts            # LocalStorage utilities
+│       └── storage.test.ts
 ├── public/                       # Static assets
 ├── next.config.js                # Next.js configuration
 ├── tailwind.config.ts            # Tailwind CSS configuration

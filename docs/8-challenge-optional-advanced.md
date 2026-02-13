@@ -32,8 +32,8 @@ Write end-to-end tests for the Currency Converter using Playwright.
 **Example prompt:**
 
 ```
-@workspace Help me set up Playwright for E2E testing and create tests 
-for the currency conversion flow. The tests should cover entering an 
+@workspace Help me set up Playwright for E2E testing and create tests
+for the currency conversion flow. The tests should cover entering an
 amount, selecting currencies, and verifying the conversion result.
 ```
 
@@ -45,7 +45,7 @@ Use Copilot to review existing code and suggest improvements.
 
 **What to do:**
 
-1. Select a component or hook (e.g., `useConverter.ts` or `ConverterForm.tsx`)
+1. Select a component or hook (e.g., `useConverter/useConverter.ts` or `ConverterForm.tsx`)
 2. Ask Copilot to review for:
    - Code quality and best practices
    - Performance issues
@@ -56,8 +56,8 @@ Use Copilot to review existing code and suggest improvements.
 **Example prompt:**
 
 ```
-#file:useConverter.ts
-Review this hook for code quality, performance issues, and potential 
+#file:useConverter/useConverter.ts
+Review this hook for code quality, performance issues, and potential
 improvements. Focus on error handling and edge cases.
 ```
 
@@ -69,7 +69,7 @@ Practice refactoring with AI assistance by improving code structure.
 
 **What to do:**
 
-1. Identify code that could be improved (e.g., `utils/currency.ts`)
+1. Identify code that could be improved (e.g., `utils/currency/currency.ts`)
 2. Ask Copilot to suggest refactoring opportunities:
    - Extract reusable functions
    - Improve type safety
@@ -81,8 +81,8 @@ Practice refactoring with AI assistance by improving code structure.
 
 ```
 #file:currency.ts
-Suggest refactoring opportunities for this file. Focus on extracting 
-reusable functions and improving type safety. Ensure changes don't 
+Suggest refactoring opportunities for this file. Focus on extracting
+reusable functions and improving type safety. Ensure changes don't
 break existing tests.
 ```
 
@@ -105,8 +105,8 @@ Use Copilot to identify and fix potential security issues.
 **Example prompt:**
 
 ```
-@workspace Analyze this project for potential security vulnerabilities. 
-Check for input validation issues, XSS risks, and insecure data handling 
+@workspace Analyze this project for potential security vulnerabilities.
+Check for input validation issues, XSS risks, and insecure data handling
 in both frontend components and API routes.
 ```
 
@@ -126,8 +126,8 @@ Generate comprehensive documentation using AI.
 **Example prompt:**
 
 ```
-#file:useExchangeRates.ts
-Add comprehensive JSDoc comments to all exported functions and types. 
+#file:useExchangeRates/useExchangeRates.ts
+Add comprehensive JSDoc comments to all exported functions and types.
 Include parameter descriptions, return values, and usage examples.
 ```
 
@@ -151,12 +151,13 @@ Set up a continuous integration pipeline using GitHub Actions.
 **Example prompt:**
 
 ```
-@workspace Create a GitHub Actions workflow for CI/CD that runs lint 
-and tests on every push and pull request to main. Use Node.js 18/20 
+@workspace Create a GitHub Actions workflow for CI/CD that runs lint
+and tests on every push and pull request to main. Use Node.js 18/20
 and include caching for npm dependencies.
 ```
 
 **Expected file structure:**
+
 ```
 .github/
   workflows/
@@ -178,13 +179,13 @@ Add persistent storage with Prisma ORM for conversion history.
 4. Create API routes for CRUD operations
 5. Update the `ConversionHistory` component to use the database
 
-> 💡 **Tip**: MCP (Model Context Protocol) is available for different databases like PostgreSQL, MySQL, and other. These MCPs allow Copilot to connect directly to your database, execute queries, and get real data during development, making it easier to build and test database features. 
+> 💡 **Tip**: MCP (Model Context Protocol) is available for different databases like PostgreSQL, MySQL, and other. These MCPs allow Copilot to connect directly to your database, execute queries, and get real data during development, making it easier to build and test database features.
 
 **Example prompt:**
 
 ```
-@workspace Help me set up Prisma with any Database (e.g., SQLite) for this Next.js project. 
-Create a schema for storing currency conversion history with fields: 
+@workspace Help me set up Prisma with any Database (e.g., SQLite) for this Next.js project.
+Create a schema for storing currency conversion history with fields:
 id, fromCurrency, toCurrency, amount, result, rate, and timestamp.
 ```
 
@@ -209,13 +210,14 @@ Perform a comprehensive accessibility audit and implement improvements.
 **Example prompt:**
 
 ```
-@workspace Perform an accessibility audit on this currency converter app. 
-Check for WCAG 2.1 AA compliance issues including keyboard navigation, 
-screen reader support, color contrast, and form accessibility. Provide 
+@workspace Perform an accessibility audit on this currency converter app.
+Check for WCAG 2.1 AA compliance issues including keyboard navigation,
+screen reader support, color contrast, and form accessibility. Provide
 specific fixes for any issues found.
 ```
 
 **Key areas to check:**
+
 - All interactive elements are keyboard accessible
 - Form inputs have associated labels
 - Error messages are announced to screen readers
