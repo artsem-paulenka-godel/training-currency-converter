@@ -143,6 +143,13 @@ export function useConverter(exchangeRates: ExchangeRates | null) {
 
   const loadFromHistory = useCallback((conversion: ConversionResult) => {
     setAmount(conversion.amount.toString());
+
+    if (conversion.from === conversion.to) {
+      setFromCurrencyState(conversion.from);
+      setToCurrencyState(getAlternateCurrency(conversion.from));
+      return;
+    }
+
     setFromCurrencyState(conversion.from);
     setToCurrencyState(conversion.to);
   }, []);

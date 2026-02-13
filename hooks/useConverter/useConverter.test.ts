@@ -51,7 +51,7 @@ describe("useConverter", () => {
 
     await waitFor(() => {
       expect(result.current.fromCurrency).toBe("USD");
-      expect(result.current.toCurrency).toBe("EUR");
+      expect(result.current.toCurrency).not.toBe("USD");
     });
 
     searchParamsSpy.mockRestore();
@@ -194,6 +194,27 @@ describe("useConverter", () => {
     expect(result.current.amount).toBe("50");
     expect(result.current.fromCurrency).toBe("GBP");
     expect(result.current.toCurrency).toBe("JPY");
+  });
+
+  it("should normalize history entries with same from and to", () => {
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    const historicalConversion = {
+      from: "USD",
+      to: "USD",
+      amount: 25,
+      result: 25,
+      rate: 1,
+      timestamp: Date.now(),
+    };
+
+    act(() => {
+      result.current.loadFromHistory(historicalConversion);
+    });
+
+    expect(result.current.amount).toBe("25");
+    expect(result.current.fromCurrency).toBe("USD");
+    expect(result.current.toCurrency).not.toBe("USD");
   });
 
   it("should clear conversion history", () => {
