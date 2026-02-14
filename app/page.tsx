@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import { PageLayout } from "@/components/PageLayout/PageLayout";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import { PageFooter } from "@/components/PageFooter/PageFooter";
 import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage";
@@ -14,11 +15,9 @@ export default function Home() {
   return (
     <Suspense
       fallback={
-        <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <LoadingSpinner message="Loading page..." />
-          </div>
-        </main>
+        <PageLayout>
+          <LoadingSpinner message="Loading page..." />
+        </PageLayout>
       }
     >
       <HomeContent />
@@ -50,51 +49,49 @@ function HomeContent() {
   } = useConverter(exchangeRates);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <PageHeader
-          title="Currency Converter"
-          subtitle="Convert currencies with real-time exchange rates"
-        />
+    <PageLayout>
+      <PageHeader
+        title="Currency Converter"
+        subtitle="Convert currencies with real-time exchange rates"
+      />
 
-        {/* Main Converter Card */}
-        <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
-          <ErrorMessage message={error} />
+      {/* Main Converter Card */}
+      <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
+        <ErrorMessage message={error} />
 
-          {loading ? (
-            <LoadingSpinner message="Loading exchange rates..." />
-          ) : (
-            <ConverterForm
-              amount={amount}
-              fromCurrency={fromCurrency}
-              toCurrency={toCurrency}
-              result={result}
-              validationError={validationError}
-              exchangeRates={exchangeRates}
-              onAmountChange={setAmount}
-              onFromCurrencyChange={setFromCurrency}
-              onToCurrencyChange={setToCurrency}
-              onSwap={handleSwap}
-              onRefreshRates={refreshRates}
-              isRefreshingRates={isRefreshingRates}
-            />
-          )}
-        </div>
-
-        {/* History Section */}
-        <ConversionHistory
-          history={history}
-          showHistory={showHistory}
-          onToggle={() => setShowHistory(!showHistory)}
-          onClear={clearConversionHistory}
-          onLoadConversion={(conversion) => {
-            loadFromHistory(conversion);
-            setShowHistory(false);
-          }}
-        />
-
-        <PageFooter lastUpdated={exchangeRates?.timestamp} />
+        {loading ? (
+          <LoadingSpinner message="Loading exchange rates..." />
+        ) : (
+          <ConverterForm
+            amount={amount}
+            fromCurrency={fromCurrency}
+            toCurrency={toCurrency}
+            result={result}
+            validationError={validationError}
+            exchangeRates={exchangeRates}
+            onAmountChange={setAmount}
+            onFromCurrencyChange={setFromCurrency}
+            onToCurrencyChange={setToCurrency}
+            onSwap={handleSwap}
+            onRefreshRates={refreshRates}
+            isRefreshingRates={isRefreshingRates}
+          />
+        )}
       </div>
-    </main>
+
+      {/* History Section */}
+      <ConversionHistory
+        history={history}
+        showHistory={showHistory}
+        onToggle={() => setShowHistory(!showHistory)}
+        onClear={clearConversionHistory}
+        onLoadConversion={(conversion) => {
+          loadFromHistory(conversion);
+          setShowHistory(false);
+        }}
+      />
+
+      <PageFooter lastUpdated={exchangeRates?.timestamp} />
+    </PageLayout>
   );
 }
