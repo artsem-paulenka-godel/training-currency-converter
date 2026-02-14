@@ -3,6 +3,9 @@ import { axe } from "jest-axe";
 import { PageFooter } from "@/components/PageFooter/PageFooter";
 
 describe("PageFooter", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("should render the static message about exchange rates", () => {
     render(<PageFooter />);
 
