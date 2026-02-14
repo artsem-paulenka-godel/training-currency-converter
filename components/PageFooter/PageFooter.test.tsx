@@ -17,7 +17,7 @@ describe("PageFooter", () => {
   it("should render the copyright notice with dynamic year", () => {
     render(<PageFooter />);
 
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getUTCFullYear();
     expect(
       screen.getByText(
         `© ${currentYear} Godel Technologies. All rights reserved.`,
@@ -50,7 +50,7 @@ describe("PageFooter", () => {
     const timestamp = 1707926400000;
     render(<PageFooter lastUpdated={timestamp} />);
 
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getUTCFullYear();
     const expectedDate = new Date(timestamp).toLocaleString();
 
     expect(
@@ -69,7 +69,7 @@ describe("PageFooter", () => {
   it("should render only the static message and copyright when lastUpdated is not provided", () => {
     render(<PageFooter />);
 
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getUTCFullYear();
 
     expect(
       screen.getByText("Exchange rates are updated hourly"),
