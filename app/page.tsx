@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import { PageFooter } from "@/components/PageFooter/PageFooter";
 import { ErrorMessage } from "@/components/ErrorMessage/ErrorMessage";
@@ -11,6 +11,22 @@ import { useExchangeRates } from "@/hooks/useExchangeRates/useExchangeRates";
 import { useConverter } from "@/hooks/useConverter/useConverter";
 
 export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <LoadingSpinner message="Loading page..." />
+          </div>
+        </main>
+      }
+    >
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeContent() {
   const [showHistory, setShowHistory] = useState<boolean>(false);
 
   // Fetch exchange rates
