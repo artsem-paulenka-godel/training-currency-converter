@@ -155,31 +155,25 @@ export function useConverter(exchangeRates: ExchangeRates | null) {
   }, []);
 
   const setFromCurrency = useCallback(
-    (currency: string) => {
-      setFromCurrencyState((previousFrom) => {
-        if (currency === toCurrency) {
-          setToCurrencyState(previousFrom);
-          return currency;
-        }
+    (newFromCurrency: string) => {
+      if (newFromCurrency === toCurrency) {
+        setToCurrencyState(fromCurrency);
+      }
 
-        return currency;
-      });
+      setFromCurrencyState(newFromCurrency);
     },
-    [toCurrency],
+    [fromCurrency, toCurrency],
   );
 
   const setToCurrency = useCallback(
-    (currency: string) => {
-      setToCurrencyState((previousTo) => {
-        if (currency === fromCurrency) {
-          setFromCurrencyState(previousTo);
-          return currency;
-        }
+    (newToCurrency: string) => {
+      if (newToCurrency === fromCurrency) {
+        setFromCurrencyState(toCurrency);
+      }
 
-        return currency;
-      });
+      setToCurrencyState(newToCurrency);
     },
-    [fromCurrency],
+    [fromCurrency, toCurrency],
   );
 
   const clearConversionHistory = useCallback(() => {

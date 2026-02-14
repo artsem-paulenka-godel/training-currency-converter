@@ -4,24 +4,6 @@ import { ExchangeRates } from "@/types";
 import * as storage from "@/utils/storage/storage";
 import * as nextNavigation from "next/navigation";
 
-jest.mock("next/navigation", () => ({
-  useRouter() {
-    return {
-      push: jest.fn(),
-      replace: jest.fn(),
-      prefetch: jest.fn(),
-      back: jest.fn(),
-      pathname: "/",
-      query: {},
-      asPath: "/",
-    };
-  },
-  useSearchParams: jest.fn(),
-  usePathname() {
-    return "/";
-  },
-}));
-
 // Mock the storage functions
 jest.mock("@/utils/storage/storage");
 

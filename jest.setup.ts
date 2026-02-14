@@ -1,33 +1,31 @@
 // Learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
-import 'jest-axe/extend-expect';
+import "@testing-library/jest-dom";
+import "jest-axe/extend-expect";
 
 // Mock Next.js router
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter() {
     return {
       push: jest.fn(),
       replace: jest.fn(),
       prefetch: jest.fn(),
       back: jest.fn(),
-      pathname: '/',
+      pathname: "/",
       query: {},
-      asPath: '/',
+      asPath: "/",
     };
   },
-  useSearchParams() {
-    return {
-      get: jest.fn(),
-    };
-  },
+  useSearchParams: jest.fn().mockReturnValue({
+    get: jest.fn(),
+  }),
   usePathname() {
-    return '/';
+    return "/";
   },
 }));
 
 // Mock window.matchMedia (only in jsdom environment)
-if (typeof window !== 'undefined') {
-  Object.defineProperty(window, 'matchMedia', {
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "matchMedia", {
     writable: true,
     value: jest.fn().mockImplementation((query) => ({
       matches: false,
@@ -59,7 +57,7 @@ if (typeof window !== 'undefined') {
     };
   })();
 
-  Object.defineProperty(window, 'localStorage', {
+  Object.defineProperty(window, "localStorage", {
     value: localStorageMock,
   });
 }
