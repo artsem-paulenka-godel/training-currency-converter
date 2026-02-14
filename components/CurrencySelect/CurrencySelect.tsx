@@ -4,12 +4,14 @@ interface CurrencySelectProps {
   value: string;
   onChange: (value: string) => void;
   label?: string;
+  ariaLabel?: string;
 }
 
 export function CurrencySelect({
   value,
   onChange,
   label,
+  ariaLabel,
 }: CurrencySelectProps) {
   return (
     <div className="flex-1 w-full sm:w-auto relative">
@@ -21,6 +23,7 @@ export function CurrencySelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        aria-label={ariaLabel || label || "Currency"}
         className="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none text-lg bg-white cursor-pointer hover:border-gray-400 transition-colors appearance-none"
       >
         {CURRENCIES.map((currency) => (

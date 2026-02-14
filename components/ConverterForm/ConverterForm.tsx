@@ -53,11 +53,16 @@ export function ConverterForm({
           <CurrencySelect
             value={fromCurrency}
             onChange={onFromCurrencyChange}
+            ariaLabel="From currency"
           />
 
           <SwapButton onClick={onSwap} />
 
-          <CurrencySelect value={toCurrency} onChange={onToCurrencyChange} />
+          <CurrencySelect
+            value={toCurrency}
+            onChange={onToCurrencyChange}
+            ariaLabel="To currency"
+          />
 
           <RefreshingRatesButton
             onClick={onRefreshRates}

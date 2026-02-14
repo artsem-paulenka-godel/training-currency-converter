@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import { ConverterForm } from "@/components/ConverterForm/ConverterForm";
 import { ExchangeRates } from "@/types";
 
@@ -32,6 +33,12 @@ describe("ConverterForm", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("should render without accessibility violations", async () => {
+    const { container } = render(<ConverterForm {...defaultProps} />);
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("should render all form elements", () => {

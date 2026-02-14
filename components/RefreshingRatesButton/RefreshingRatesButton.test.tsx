@@ -1,10 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import { RefreshingRatesButton } from "@/components/RefreshingRatesButton/RefreshingRatesButton";
 
 describe("RefreshingRatesButton", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("should render without accessibility violations", async () => {
+    const { container } = render(
+      <RefreshingRatesButton onClick={jest.fn()} isRefreshing={false} />,
+    );
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("should render refresh button in idle state", () => {
