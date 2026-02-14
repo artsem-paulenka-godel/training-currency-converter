@@ -3,7 +3,7 @@ interface PageFooterProps {
 }
 
 export function PageFooter({ lastUpdated }: PageFooterProps) {
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getUTCFullYear();
 
   return (
     <div className="text-center mt-8 text-gray-600 text-sm">
