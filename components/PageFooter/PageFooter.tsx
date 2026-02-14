@@ -3,6 +3,8 @@ interface PageFooterProps {
 }
 
 export function PageFooter({ lastUpdated }: PageFooterProps) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="text-center mt-8 text-gray-600 text-sm">
       <p>Exchange rates are updated hourly</p>
@@ -11,6 +13,9 @@ export function PageFooter({ lastUpdated }: PageFooterProps) {
           Last updated: {new Date(lastUpdated).toLocaleString()}
         </p>
       )}
+      <p className="mt-2">
+        © {currentYear} Godel Technologies. All rights reserved.
+      </p>
     </div>
   );
 }
