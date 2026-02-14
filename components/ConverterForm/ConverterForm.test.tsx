@@ -26,6 +26,8 @@ describe("ConverterForm", () => {
     onFromCurrencyChange: jest.fn(),
     onToCurrencyChange: jest.fn(),
     onSwap: jest.fn(),
+    onRefreshRates: jest.fn(),
+    isRefreshingRates: false,
   };
 
   beforeEach(() => {
@@ -39,6 +41,9 @@ describe("ConverterForm", () => {
     expect(screen.getAllByRole("combobox")).toHaveLength(2);
     expect(
       screen.getByRole("button", { name: /swap currencies/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /refresh rates/i }),
     ).toBeInTheDocument();
   });
 
@@ -103,6 +108,33 @@ describe("ConverterForm", () => {
     await user.click(swapButton);
 
     expect(defaultProps.onSwap).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call onRefreshRates when refresh button is clicked", async () => {
+    const user = userEvent.setup();
+
+    render(<ConverterForm {...defaultProps} />);
+
+    const refreshButton = screen.getByRole("button", {
+      name: /refresh rates/i,
+    });
+
+    await user.click(refreshButton);
+
+    expect(defaultProps.onRefreshRates).toHaveBeenCalledTimes(1);
+  });
+
+  it("should show disabled spinner state when refreshing rates", () => {
+    render(<ConverterForm {...defaultProps} isRefreshingRates />);
+
+    const refreshButton = screen.getByRole("button", {
+      name: /refresh rates/i,
+    });
+
+    expect(refreshButton).toBeDisabled();
+    expect(
+      screen.getByRole("status", { name: /refreshing rates/i }),
+    ).toBeInTheDocument();
   });
 
   it("should calculate and display exchange rate correctly", () => {

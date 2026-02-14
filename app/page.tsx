@@ -14,7 +14,8 @@ export default function Home() {
   const [showHistory, setShowHistory] = useState<boolean>(false);
 
   // Fetch exchange rates
-  const { exchangeRates, loading, error } = useExchangeRates();
+  const { exchangeRates, loading, error, refreshRates, isRefreshingRates } =
+    useExchangeRates();
 
   // Conversion logic
   const {
@@ -58,6 +59,8 @@ export default function Home() {
               onFromCurrencyChange={setFromCurrency}
               onToCurrencyChange={setToCurrency}
               onSwap={handleSwap}
+              onRefreshRates={refreshRates}
+              isRefreshingRates={isRefreshingRates}
             />
           )}
         </div>

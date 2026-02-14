@@ -1,6 +1,7 @@
 import { AmountInput } from "@/components/AmountInput/AmountInput";
 import { CurrencySelect } from "@/components/CurrencySelect/CurrencySelect";
 import { SwapButton } from "@/components/SwapButton/SwapButton";
+import { RefreshingRatesButton } from "@/components/RefreshingRatesButton/RefreshingRatesButton";
 import { ConversionResult } from "@/components/ConversionResult/ConversionResult";
 import { ExchangeRates } from "@/types";
 
@@ -15,6 +16,8 @@ interface ConverterFormProps {
   onFromCurrencyChange: (value: string) => void;
   onToCurrencyChange: (value: string) => void;
   onSwap: () => void;
+  onRefreshRates: () => void;
+  isRefreshingRates: boolean;
 }
 
 export function ConverterForm({
@@ -28,6 +31,8 @@ export function ConverterForm({
   onFromCurrencyChange,
   onToCurrencyChange,
   onSwap,
+  onRefreshRates,
+  isRefreshingRates,
 }: ConverterFormProps) {
   const currentRate =
     exchangeRates && fromCurrency && toCurrency
@@ -53,6 +58,11 @@ export function ConverterForm({
           <SwapButton onClick={onSwap} />
 
           <CurrencySelect value={toCurrency} onChange={onToCurrencyChange} />
+
+          <RefreshingRatesButton
+            onClick={onRefreshRates}
+            isRefreshing={isRefreshingRates}
+          />
         </div>
 
         {/* Error message below the row */}
