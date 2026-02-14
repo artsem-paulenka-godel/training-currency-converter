@@ -2,6 +2,7 @@ import { renderHook, act, waitFor } from "@testing-library/react";
 import { useConverter } from "@/hooks/useConverter/useConverter";
 import { ExchangeRates } from "@/types";
 import * as storage from "@/utils/storage/storage";
+import * as nextNavigation from "next/navigation";
 
 // Mock the storage functions
 jest.mock("@/utils/storage/storage");
@@ -22,6 +23,9 @@ describe("useConverter", () => {
     jest.clearAllMocks();
     localStorage.clear();
     (storage.getConversionHistory as jest.Mock).mockReturnValue([]);
+    (nextNavigation.useSearchParams as jest.Mock).mockReturnValue({
+      get: jest.fn().mockReturnValue(null),
+    });
   });
 
   it("should initialize with default values", () => {
@@ -32,6 +36,25 @@ describe("useConverter", () => {
     expect(result.current.toCurrency).toBe("EUR");
     expect(result.current.result).toBe(null);
     expect(result.current.validationError).toBe(null);
+  });
+
+  it("should normalize equal currencies from URL params", async () => {
+    (nextNavigation.useSearchParams as jest.Mock).mockReturnValue({
+      get: (key: string) => {
+        if (key === "amount") return "5";
+        if (key === "from") return "EUR";
+        if (key === "to") return "EUR";
+        return null;
+      },
+    });
+
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    await waitFor(() => {
+      expect(result.current.amount).toBe("5");
+      expect(result.current.fromCurrency).toBe("EUR");
+      expect(result.current.toCurrency).not.toBe("EUR");
+    });
   });
 
   it("should update amount", () => {
@@ -108,6 +131,28 @@ describe("useConverter", () => {
     expect(result.current.toCurrency).toBe("USD");
   });
 
+  it("should swap when setting to currency equal to from currency", () => {
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    act(() => {
+      result.current.setToCurrency("USD");
+    });
+
+    expect(result.current.fromCurrency).toBe("EUR");
+    expect(result.current.toCurrency).toBe("USD");
+  });
+
+  it("should swap when setting from currency equal to to currency", () => {
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    act(() => {
+      result.current.setFromCurrency("EUR");
+    });
+
+    expect(result.current.fromCurrency).toBe("EUR");
+    expect(result.current.toCurrency).toBe("USD");
+  });
+
   it("should save conversion to history", async () => {
     const { result } = renderHook(() => useConverter(mockExchangeRates));
 
@@ -149,6 +194,27 @@ describe("useConverter", () => {
     expect(result.current.amount).toBe("50");
     expect(result.current.fromCurrency).toBe("GBP");
     expect(result.current.toCurrency).toBe("JPY");
+  });
+
+  it("should normalize history entries with same from and to", () => {
+    const { result } = renderHook(() => useConverter(mockExchangeRates));
+
+    const historicalConversion = {
+      from: "USD",
+      to: "USD",
+      amount: 25,
+      result: 25,
+      rate: 1,
+      timestamp: Date.now(),
+    };
+
+    act(() => {
+      result.current.loadFromHistory(historicalConversion);
+    });
+
+    expect(result.current.amount).toBe("25");
+    expect(result.current.fromCurrency).toBe("USD");
+    expect(result.current.toCurrency).not.toBe("USD");
   });
 
   it("should clear conversion history", () => {
