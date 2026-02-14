@@ -45,17 +45,38 @@ describe("PageFooter", () => {
 
   it("should render all three elements when lastUpdated is provided", () => {
     const timestamp = 1707926400000;
-    const { container } = render(<PageFooter lastUpdated={timestamp} />);
+    render(<PageFooter lastUpdated={timestamp} />);
 
-    const paragraphs = container.querySelectorAll("p");
-    expect(paragraphs).toHaveLength(3);
+    const currentYear = new Date().getFullYear();
+    const expectedDate = new Date(timestamp).toLocaleString();
+
+    expect(
+      screen.getByText("Exchange rates are updated hourly"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        `© ${currentYear} Godel Technologies. All rights reserved.`,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(`Last updated: ${expectedDate}`),
+    ).toBeInTheDocument();
   });
 
-  it("should render two elements when lastUpdated is not provided", () => {
-    const { container } = render(<PageFooter />);
+  it("should render only the static message and copyright when lastUpdated is not provided", () => {
+    render(<PageFooter />);
 
-    const paragraphs = container.querySelectorAll("p");
-    expect(paragraphs).toHaveLength(2);
+    const currentYear = new Date().getFullYear();
+
+    expect(
+      screen.getByText("Exchange rates are updated hourly"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        `© ${currentYear} Godel Technologies. All rights reserved.`,
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Last updated:/)).not.toBeInTheDocument();
   });
 
   it("should have no accessibility violations", async () => {
