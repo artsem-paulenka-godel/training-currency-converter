@@ -2,6 +2,7 @@ import {
   getConversionHistory,
   saveConversion,
   clearConversionHistory,
+  isLocalStorageAvailable,
   getFavoriteCurrencies,
   saveFavoriteCurrencies,
   clearFavoriteCurrencies,
@@ -14,6 +15,24 @@ describe("storage utils", () => {
     // Clear localStorage before each test
     localStorage.clear();
     jest.clearAllMocks();
+  });
+
+  describe("isLocalStorageAvailable", () => {
+    it("should return true when localStorage is accessible", () => {
+      expect(isLocalStorageAvailable()).toBe(true);
+    });
+
+    it("should return false when localStorage throws", () => {
+      const setItemSpy = jest.spyOn(window.localStorage, "setItem");
+      setItemSpy.mockImplementation(() => {
+        throw new Error("Storage unavailable");
+      });
+
+      expect(isLocalStorageAvailable()).toBe(false);
+      expect(console.error).toHaveBeenCalled();
+
+      setItemSpy.mockRestore();
+    });
   });
 
   describe("getConversionHistory", () => {
