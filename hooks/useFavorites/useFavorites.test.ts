@@ -91,7 +91,9 @@ describe("useFavorites", () => {
       result.current.toggleFavorite("USD");
     });
 
-    expect(storage.saveFavoriteCurrencies).toHaveBeenCalledWith(["USD"]);
+    await waitFor(() => {
+      expect(storage.saveFavoriteCurrencies).toHaveBeenCalledWith(["USD"]);
+    });
   });
 
   it("should show a non-persistent message when storage is unavailable", () => {
