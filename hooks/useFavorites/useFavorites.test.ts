@@ -96,11 +96,13 @@ describe("useFavorites", () => {
     });
   });
 
-  it("should show a non-persistent message when storage is unavailable", () => {
+  it("should show a non-persistent message when storage is unavailable", async () => {
     (storage.isLocalStorageAvailable as jest.Mock).mockReturnValue(false);
 
     const { result } = renderHook(() => useFavorites());
 
-    expect(result.current.storageMessage).toMatch(/not persist/i);
+    await waitFor(() => {
+      expect(result.current.storageMessage).toMatch(/not persist/i);
+    });
   });
 });
