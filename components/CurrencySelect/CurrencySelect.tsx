@@ -33,6 +33,7 @@ export function CurrencySelect({
   );
 
   const selectPaddingClass = onToggleFavorite ? "pr-24" : "pr-12";
+  const chevronPositionClass = onToggleFavorite ? "right-14" : "right-3";
 
   return (
     <div className="flex-1 w-full sm:w-auto relative">
@@ -80,7 +81,9 @@ export function CurrencySelect({
           className="absolute right-2 top-1/2 -translate-y-1/2 h-11 w-11 bg-white text-lg"
         />
       )}
-      <div className="absolute inset-y-0 right-14 flex items-center pr-3 pointer-events-none">
+      <div
+        className={`absolute inset-y-0 ${chevronPositionClass} flex items-center pr-3 pointer-events-none`}
+      >
         <svg
           className="w-5 h-5 text-gray-400"
           fill="none"
