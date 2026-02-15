@@ -10,6 +10,7 @@ import { ConverterForm } from "@/components/ConverterForm/ConverterForm";
 import { ConversionHistory } from "@/components/ConversionHistory/ConversionHistory";
 import { useExchangeRates } from "@/hooks/useExchangeRates/useExchangeRates";
 import { useConverter } from "@/hooks/useConverter/useConverter";
+import { useFavorites } from "@/hooks/useFavorites/useFavorites";
 
 export default function Home() {
   return (
@@ -48,6 +49,9 @@ function HomeContent() {
     clearConversionHistory,
   } = useConverter(exchangeRates);
 
+  const { favorites, toggleFavorite, limitMessage, storageMessage } =
+    useFavorites();
+
   return (
     <PageLayout>
       <PageHeader
@@ -69,10 +73,14 @@ function HomeContent() {
             result={result}
             validationError={validationError}
             exchangeRates={exchangeRates}
+            favorites={favorites}
+            favoriteLimitMessage={limitMessage}
+            favoriteStorageMessage={storageMessage}
             onAmountChange={setAmount}
             onFromCurrencyChange={setFromCurrency}
             onToCurrencyChange={setToCurrency}
             onSwap={handleSwap}
+            onToggleFavorite={toggleFavorite}
             onRefreshRates={refreshRates}
             isRefreshingRates={isRefreshingRates}
           />

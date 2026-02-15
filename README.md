@@ -30,6 +30,8 @@ This repository is a hands-on learning platform for AI-assisted development with
 
 - **Conversion History**: Tracks your last 10 conversions
 - **History Management**: View, reload, or clear your conversion history
+- **Favorite Currencies**: Mark up to five favorites and keep them at the top of both selectors
+- **Favorites Persistence**: Favorites are stored in localStorage when available
 - **Input Validation**: Real-time validation with helpful error messages
 - **Responsive Design**: Works perfectly on mobile and desktop devices
 - **Error Handling**: Graceful fallback when API services are unavailable

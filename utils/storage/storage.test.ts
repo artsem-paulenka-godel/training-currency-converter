@@ -2,8 +2,12 @@ import {
   getConversionHistory,
   saveConversion,
   clearConversionHistory,
+  getFavoriteCurrencies,
+  saveFavoriteCurrencies,
+  clearFavoriteCurrencies,
 } from "@/utils/storage/storage";
 import { ConversionResult } from "@/types";
+import { CURRENCIES } from "@/utils/currency/currency";
 
 describe("storage utils", () => {
   beforeEach(() => {
@@ -179,6 +183,88 @@ describe("storage utils", () => {
     it("should work even when no history exists", () => {
       expect(() => clearConversionHistory()).not.toThrow();
       expect(getConversionHistory()).toHaveLength(0);
+    });
+  });
+
+  describe("favorite storage", () => {
+    it("should return empty array when no favorites exist", () => {
+      const favorites = getFavoriteCurrencies();
+
+      expect(favorites).toEqual([]);
+    });
+
+    it("should save favorites to localStorage", () => {
+      saveFavoriteCurrencies(["USD", "EUR"]);
+
+      const stored = localStorage.getItem("currency_converter_favorites");
+
+      expect(stored).toBeTruthy();
+      expect(getFavoriteCurrencies()).toEqual(["USD", "EUR"]);
+    });
+
+    it("should remove invalid and duplicate favorites and cap at five", () => {
+      const validCodes = CURRENCIES.map((currency) => currency.code);
+      const input = [
+        validCodes[0],
+        "INVALID",
+        validCodes[1],
+        validCodes[0],
+        validCodes[2],
+        validCodes[3],
+        validCodes[4],
+        validCodes[5],
+      ];
+
+      saveFavoriteCurrencies(input);
+
+      expect(getFavoriteCurrencies()).toEqual([
+        validCodes[0],
+        validCodes[1],
+        validCodes[2],
+        validCodes[3],
+        validCodes[4],
+      ]);
+    });
+
+    it("should ignore malformed favorites data", () => {
+      localStorage.setItem("currency_converter_favorites", "not-json");
+
+      const favorites = getFavoriteCurrencies();
+
+      expect(favorites).toEqual([]);
+      expect(console.error).toHaveBeenCalled();
+    });
+
+    it("should ignore non-array favorites data", () => {
+      localStorage.setItem(
+        "currency_converter_favorites",
+        JSON.stringify({ codes: ["USD"] }),
+      );
+
+      const favorites = getFavoriteCurrencies();
+
+      expect(favorites).toEqual([]);
+    });
+
+    it("should filter invalid codes when reading favorites", () => {
+      localStorage.setItem(
+        "currency_converter_favorites",
+        JSON.stringify(["USD", "INVALID", "EUR"]),
+      );
+
+      const favorites = getFavoriteCurrencies();
+
+      expect(favorites).toEqual(["USD", "EUR"]);
+    });
+
+    it("should clear favorites", () => {
+      saveFavoriteCurrencies(["USD", "EUR"]);
+
+      expect(getFavoriteCurrencies()).toHaveLength(2);
+
+      clearFavoriteCurrencies();
+
+      expect(getFavoriteCurrencies()).toHaveLength(0);
     });
   });
 });

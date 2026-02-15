@@ -27,6 +27,14 @@ export interface ConversionHistory {
   conversions: ConversionResult[];
 }
 
+export interface FavoriteEntry {
+  code: string;
+}
+
+export interface FavoriteList {
+  codes: string[];
+}
+
 export interface ApiResponse {
   success: boolean;
   data?: ExchangeRates;

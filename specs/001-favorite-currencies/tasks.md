@@ -23,7 +23,7 @@ description: "Task list for Favorite Currencies"
 
 **Purpose**: Ensure test and tooling baselines are ready for favorites work
 
-- [ ] T001 Review localStorage test utilities and update mocks if needed in jest.setup.ts
+- [x] T001 Review localStorage test utilities and update mocks if needed in jest.setup.ts
 
 ---
 
@@ -31,10 +31,10 @@ description: "Task list for Favorite Currencies"
 
 **Purpose**: Core utilities and types required by all user stories
 
-- [ ] T002 Add favorites storage helpers (get/save/clear + validation) in utils/storage/storage.ts
-- [ ] T003 [P] Add FavoriteList/FavoriteEntry types in types/index.ts
-- [ ] T004 [P] Add/reuse currency validation helper (supported code check) in utils/currency/currency.ts
-- [ ] T005 [P] Add unit tests for favorites storage helpers in utils/storage/storage.test.ts
+- [x] T002 Add favorites storage helpers (get/save/clear + validation) in utils/storage/storage.ts
+- [x] T003 [P] Add FavoriteList/FavoriteEntry types in types/index.ts
+- [x] T004 [P] Add/reuse currency validation helper (supported code check) in utils/currency/currency.ts
+- [x] T005 [P] Add unit tests for favorites storage helpers in utils/storage/storage.test.ts
 
 **Checkpoint**: Favorites storage and validation utilities are available for UI integration.
 
@@ -50,16 +50,16 @@ description: "Task list for Favorite Currencies"
 
 > **NOTE: Write these tests FIRST and ensure they fail before implementation**
 
-- [ ] T006 [P] [US1] Update components/CurrencySelect/CurrencySelect.test.tsx to verify Favorites optgroup ordering, accessible labeling, and `jest-axe` no-violations checks
-- [ ] T007 [P] [US1] Add component tests for favorite toggle keyboard behavior and `jest-axe` checks in components/FavoriteToggle/FavoriteToggle.test.tsx
-- [ ] T022 [P] [US1] Add initial mark/unmark/order behavior tests in hooks/useFavorites/useFavorites.test.ts
+- [x] T006 [P] [US1] Update components/CurrencySelect/CurrencySelect.test.tsx to verify Favorites optgroup ordering, accessible labeling, and `jest-axe` no-violations checks
+- [x] T007 [P] [US1] Add component tests for favorite toggle keyboard behavior and `jest-axe` checks in components/FavoriteToggle/FavoriteToggle.test.tsx
+- [x] T022 [P] [US1] Add initial mark/unmark/order behavior tests in hooks/useFavorites/useFavorites.test.ts
 
 ### Implementation for User Story 1
 
-- [ ] T008 [P] [US1] Create FavoriteToggle component in components/FavoriteToggle/FavoriteToggle.tsx
-- [ ] T009 [US1] Extend components/CurrencySelect/CurrencySelect.tsx to accept favorites and render a Favorites optgroup
-- [ ] T010 [US1] Create favorites state hook in hooks/useFavorites/useFavorites.ts and wire it to app/page.tsx
-- [ ] T011 [US1] Update components/ConverterForm/ConverterForm.tsx to render FavoriteToggle and pass favorites to CurrencySelect
+- [x] T008 [P] [US1] Create FavoriteToggle component in components/FavoriteToggle/FavoriteToggle.tsx
+- [x] T009 [US1] Extend components/CurrencySelect/CurrencySelect.tsx to accept favorites and render a Favorites optgroup
+- [x] T010 [US1] Create favorites state hook in hooks/useFavorites/useFavorites.ts and wire it to app/page.tsx
+- [x] T011 [US1] Update components/ConverterForm/ConverterForm.tsx to render FavoriteToggle and pass favorites to CurrencySelect
 
 **Checkpoint**: Favorites can be added/removed and appear at the top of both selectors.
 
@@ -73,13 +73,13 @@ description: "Task list for Favorite Currencies"
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T012 [P] [US2] Add limit enforcement tests to hooks/useFavorites/useFavorites.test.ts
-- [ ] T013 [P] [US2] Add aria-live limit message test in components/ConverterForm/ConverterForm.test.tsx
+- [x] T012 [P] [US2] Add limit enforcement tests to hooks/useFavorites/useFavorites.test.ts
+- [x] T013 [P] [US2] Add aria-live limit message test in components/ConverterForm/ConverterForm.test.tsx
 
 ### Implementation for User Story 2
 
-- [ ] T014 [US2] Implement limit enforcement and error state in hooks/useFavorites/useFavorites.ts
-- [ ] T015 [US2] Render limit message with aria-live in components/ConverterForm/ConverterForm.tsx
+- [x] T014 [US2] Implement limit enforcement and error state in hooks/useFavorites/useFavorites.ts
+- [x] T015 [US2] Render limit message with aria-live in components/ConverterForm/ConverterForm.tsx
 
 **Checkpoint**: Favoriting beyond five is blocked with clear accessible feedback.
 
@@ -93,14 +93,14 @@ description: "Task list for Favorite Currencies"
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T016 [P] [US3] Add persistence and malformed-data tests in utils/storage/storage.test.ts
-- [ ] T017 [P] [US3] Add persistence, malformed-storage, and storage-unavailable tests in hooks/useFavorites/useFavorites.test.ts
+- [x] T016 [P] [US3] Add persistence and malformed-data tests in utils/storage/storage.test.ts
+- [x] T017 [P] [US3] Add persistence, malformed-storage, and storage-unavailable tests in hooks/useFavorites/useFavorites.test.ts
 
 ### Implementation for User Story 3
 
-- [ ] T018 [US3] Load/persist favorites in hooks/useFavorites/useFavorites.ts using storage helpers
-- [ ] T019 [US3] Add non-persistent-state message when storage is unavailable in components/ConverterForm/ConverterForm.tsx
-- [ ] T023 [US3] Add non-persistent-state message test in components/ConverterForm/ConverterForm.test.tsx
+- [x] T018 [US3] Load/persist favorites in hooks/useFavorites/useFavorites.ts using storage helpers
+- [x] T019 [US3] Add non-persistent-state message when storage is unavailable in components/ConverterForm/ConverterForm.tsx
+- [x] T023 [US3] Add non-persistent-state message test in components/ConverterForm/ConverterForm.test.tsx
 
 **Checkpoint**: Favorites persist across reloads and degrade gracefully when storage is blocked.
 
@@ -110,10 +110,12 @@ description: "Task list for Favorite Currencies"
 
 **Purpose**: Final quality checks and documentation updates
 
-- [ ] T020 [P] Update README.md with Favorite Currencies feature description
-- [ ] T021 Run quickstart validation steps in specs/001-favorite-currencies/quickstart.md
-- [ ] T024 Run `npm run test:ci` and confirm coverage gate remains >= 80%
-- [ ] T025 Run `npm run build` and `npm run lint` before merge
+- [x] T020 [P] Update README.md with Favorite Currencies feature description
+- [x] T021 Run quickstart validation steps in specs/001-favorite-currencies/quickstart.md
+- [x] T024 Run `npm run test:ci` and confirm coverage gate remains >= 80%
+- [x] T025 Run `npm run build` and `npm run lint` before merge
+- [x] T026 [US1] Move favorite toggles into CurrencySelect trailing star icon and simplify ConverterForm layout
+- [x] T027 [US1] Refactor CurrencySelect to use FavoriteToggle SVG-only icon and adjust selector padding in components/CurrencySelect/CurrencySelect.tsx and components/FavoriteToggle/FavoriteToggle.tsx
 
 ---
 

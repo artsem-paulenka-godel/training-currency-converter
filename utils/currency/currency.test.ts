@@ -1,6 +1,7 @@
 import {
   CURRENCIES,
   getCurrencyByCode,
+  isSupportedCurrencyCode,
   formatAmount,
   convertCurrency,
   formatCurrencyDisplay,
@@ -51,6 +52,18 @@ describe("currency utils", () => {
     it("should be case-sensitive", () => {
       const lowercase = getCurrencyByCode("usd");
       expect(lowercase).toBeUndefined();
+    });
+  });
+
+  describe("isSupportedCurrencyCode", () => {
+    it("should return true for supported codes", () => {
+      expect(isSupportedCurrencyCode("USD")).toBe(true);
+      expect(isSupportedCurrencyCode("EUR")).toBe(true);
+    });
+
+    it("should return false for unsupported codes", () => {
+      expect(isSupportedCurrencyCode("INVALID")).toBe(false);
+      expect(isSupportedCurrencyCode("usd")).toBe(false);
     });
   });
 
