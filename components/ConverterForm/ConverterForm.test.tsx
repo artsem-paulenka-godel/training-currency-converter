@@ -23,10 +23,14 @@ describe("ConverterForm", () => {
     result: 85,
     validationError: null,
     exchangeRates: mockExchangeRates,
+    favorites: [],
+    favoriteLimitMessage: null,
+    favoriteStorageMessage: null,
     onAmountChange: jest.fn(),
     onFromCurrencyChange: jest.fn(),
     onToCurrencyChange: jest.fn(),
     onSwap: jest.fn(),
+    onToggleFavorite: jest.fn(),
     onRefreshRates: jest.fn(),
     isRefreshingRates: false,
   };
@@ -181,6 +185,37 @@ describe("ConverterForm", () => {
 
     expect(screen.getByPlaceholderText("Enter amount")).toBeInTheDocument();
     expect(screen.queryByText(/1 USD =/)).not.toBeInTheDocument();
+  });
+
+  it("should announce favorite limit message", () => {
+    const limitMessage = "You can only favorite up to five currencies.";
+
+    render(
+      <ConverterForm {...defaultProps} favoriteLimitMessage={limitMessage} />,
+    );
+
+    const message = screen.getByText(limitMessage);
+
+    expect(message).toBeInTheDocument();
+    expect(message).toHaveAttribute("aria-live", "polite");
+    expect(message).toHaveAttribute("role", "status");
+  });
+
+  it("should announce storage availability message", () => {
+    const storageMessage = "Favorites will not persist across sessions.";
+
+    render(
+      <ConverterForm
+        {...defaultProps}
+        favoriteStorageMessage={storageMessage}
+      />,
+    );
+
+    const message = screen.getByText(storageMessage);
+
+    expect(message).toBeInTheDocument();
+    expect(message).toHaveAttribute("aria-live", "polite");
+    expect(message).toHaveAttribute("role", "status");
   });
 
   it("should handle result of null gracefully", () => {

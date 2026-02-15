@@ -12,10 +12,14 @@ interface ConverterFormProps {
   result: number | null;
   validationError: string | null;
   exchangeRates: ExchangeRates | null;
+  favorites: string[];
+  favoriteLimitMessage: string | null;
+  favoriteStorageMessage: string | null;
   onAmountChange: (value: string) => void;
   onFromCurrencyChange: (value: string) => void;
   onToCurrencyChange: (value: string) => void;
   onSwap: () => void;
+  onToggleFavorite: (code: string) => void;
   onRefreshRates: () => void;
   isRefreshingRates: boolean;
 }
@@ -27,10 +31,14 @@ export function ConverterForm({
   result,
   validationError,
   exchangeRates,
+  favorites,
+  favoriteLimitMessage,
+  favoriteStorageMessage,
   onAmountChange,
   onFromCurrencyChange,
   onToCurrencyChange,
   onSwap,
+  onToggleFavorite,
   onRefreshRates,
   isRefreshingRates,
 }: ConverterFormProps) {
@@ -38,6 +46,8 @@ export function ConverterForm({
     exchangeRates && fromCurrency && toCurrency
       ? exchangeRates.rates[toCurrency] / exchangeRates.rates[fromCurrency]
       : null;
+  const isFromFavorite = favorites.includes(fromCurrency);
+  const isToFavorite = favorites.includes(toCurrency);
 
   return (
     <div className="space-y-4">
@@ -54,6 +64,9 @@ export function ConverterForm({
             value={fromCurrency}
             onChange={onFromCurrencyChange}
             ariaLabel="From currency"
+            favorites={favorites}
+            isFavorite={isFromFavorite}
+            onToggleFavorite={onToggleFavorite}
           />
 
           <SwapButton onClick={onSwap} />
@@ -62,6 +75,9 @@ export function ConverterForm({
             value={toCurrency}
             onChange={onToCurrencyChange}
             ariaLabel="To currency"
+            favorites={favorites}
+            isFavorite={isToFavorite}
+            onToggleFavorite={onToggleFavorite}
           />
 
           <RefreshingRatesButton
@@ -73,6 +89,28 @@ export function ConverterForm({
         {/* Error message below the row */}
         {validationError && (
           <p className="text-sm text-red-600 px-1">{validationError}</p>
+        )}
+
+        {favoriteLimitMessage && (
+          <p
+            className="text-sm text-amber-700 px-1"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {favoriteLimitMessage}
+          </p>
+        )}
+
+        {favoriteStorageMessage && (
+          <p
+            className="text-sm text-gray-700 px-1"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {favoriteStorageMessage}
+          </p>
         )}
       </div>
 
