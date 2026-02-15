@@ -29,9 +29,13 @@
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-[Gates determined based on constitution file]
+- Code Quality: named exports, @/ imports, strict typing, explicit error handling.
+- Testing Discipline: behavior-first tests, `userEvent`, tests for each feature/bug fix, coverage >= 80% (excluding layout and type-only files), `jest-axe` in component tests.
+- Accessibility by Default: WCAG 2.1 AA or higher, semantic HTML, keyboard support, visible focus, accessible names.
+- Reliability & Safety: SSR-safe APIs, timeouts, fallbacks, no silent failures.
+- Definition of Done: build/lint/tests green, docs updated, no failing checks.
 
 ## Project Structure
 
@@ -48,6 +52,7 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
+
 <!--
   ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
   for this feature. Delete unused options and expand the chosen structure with
@@ -98,7 +103,7 @@ directories captured above]
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
+| -------------------------- | ------------------ | ------------------------------------ |
+| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |

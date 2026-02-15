@@ -1,50 +1,84 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: template -> 1.0.0
+- Modified principles: template placeholders -> I. Code Quality, II. Testing Discipline, III. Accessibility by Default, IV. Reliability & Safety, V. Definition of Done
+- Added sections: Project Standards, Workflow & Quality Gates
+- Removed sections: None
+- Templates requiring updates: ✅ .specify/templates/plan-template.md, ✅ .specify/templates/spec-template.md, ✅ .specify/templates/tasks-template.md
+- Deferred TODOs: None
+-->
+
+# training-currency-converter Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Code Quality (Non-Negotiable)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+- Modules MUST be small, focused, and single-purpose; prefer composition over large files.
+- Exports MUST be named; default exports are not allowed.
+- Imports MUST use the @/ alias for app code; no deep relative imports outside a component folder.
+- TypeScript MUST remain strict; avoid `any` and prefer explicit, narrow types.
+- Errors MUST be handled explicitly with clear user-facing or logged messages; no silent failures.
+  Rationale: Consistent structure and explicit contracts keep the codebase maintainable and safe.
+  Enforcement: PR review checks module size, exports, import paths, and type safety for every change.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Testing Discipline (Non-Negotiable)
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+- Tests MUST be behavior-first and reflect user outcomes, not implementation details.
+- `userEvent` MUST be used for interactions; `fireEvent` is disallowed.
+- Every feature and bug fix MUST include tests covering the change.
+- Minimum 80% line coverage is required; exclude layout files and type-only files from coverage.
+- Component tests MUST include `jest-axe` checks and pass `toHaveNoViolations`.
+  Rationale: Reliable behavior is proven through tests, not assumed from implementation.
+  Enforcement: CI fails on coverage or test violations; PRs without tests are blocked.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Accessibility by Default (Non-Negotiable)
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+- UI changes MUST meet WCAG 2.1 AA (or higher) requirements.
+- Use semantic HTML first; ARIA only when native semantics are insufficient.
+- All interactive elements MUST be keyboard operable with visible focus.
+- Visible labels and accessible names MUST match; no unlabeled controls.
+- Component tests MUST include `jest-axe` checks for accessibility regressions.
+  Rationale: Accessibility is a baseline quality requirement, not an optional enhancement.
+  Enforcement: PR reviews verify semantics, focus behavior, labels, and a11y tests where applicable.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Reliability & Safety (Non-Negotiable)
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+- Browser APIs MUST be SSR-safe with explicit `window`/`document` guards.
+- Network flows MUST have timeouts and defined fallbacks; never hang silently.
+- Errors MUST be surfaced to users or logged with actionable context.
+- Data transformations MUST be deterministic and validated (e.g., currency codes, amounts).
+  Rationale: Users rely on predictable behavior under real-world failures.
+  Enforcement: Review and tests verify SSR safety, timeouts, and fallback behavior.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Definition of Done (Non-Negotiable)
+
+- Build, lint, and tests MUST pass before merge.
+- Documentation MUST be updated when behavior, APIs, or workflows change.
+- No merge is allowed with failing checks or unresolved review comments.
+- Performance and accessibility regressions MUST be addressed before release.
+  Rationale: Shipping quality requires explicit, repeatable completion criteria.
+  Enforcement: Merge protection rules and reviewer sign-off enforce completion gates.
+
+## Project Standards
+
+- Stack is fixed: Next.js 14 App Router, TypeScript (strict), Tailwind CSS, Jest.
+- New dependencies require justification and must not weaken performance, accessibility, or testing.
+- Currency support MUST be driven by the shared utilities and source-of-truth data.
+
+## Workflow & Quality Gates
+
+- Each plan MUST include a Constitution Check aligned with these principles.
+- Each feature MUST include test tasks and a verification checklist.
+- Accessibility checks MUST be part of UI change reviews.
+- Releases MUST document user-visible changes and known limitations.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- This constitution supersedes local conventions and informal practices.
+- Amendments require a documented proposal, rationale, and version bump by semver rules.
+- Versioning policy: MAJOR for breaking governance changes, MINOR for new principles,
+  PATCH for clarifications and non-semantic edits.
+- Compliance is reviewed in PRs; deviations require explicit, documented approval.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-02-15 | **Last Amended**: 2026-02-15
