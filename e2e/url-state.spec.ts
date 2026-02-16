@@ -18,7 +18,6 @@ test.describe("url state management", () => {
     const toSelect = page.getByLabel("To currency");
 
     await loadConverter(page, "/?amount=200&from=USD&to=GBP");
-
     await expect(amountInput).toHaveValue("200");
     await expect(fromSelect).toHaveValue("USD");
     await expect(toSelect).toHaveValue("GBP");
@@ -34,7 +33,6 @@ test.describe("url state management", () => {
     const toSelect = page.getByLabel("To currency");
 
     await loadConverter(page, "/?amount=42&from=ZZZ&to=BAD");
-
     await expect(amountInput).toHaveValue("42");
     await expect(fromSelect).toHaveValue("USD");
     await expect(toSelect).toHaveValue("EUR");
@@ -46,7 +44,6 @@ test.describe("url state management", () => {
     const toSelect = page.getByLabel("To currency");
 
     await loadConverter(page, "/?amount=10&from=USD&to=USD");
-
     await expect(fromSelect).toHaveValue("USD");
     await expect(toSelect).toHaveValue("EUR");
     await expectQueryState(page, { amount: "10", from: "USD", to: "EUR" });

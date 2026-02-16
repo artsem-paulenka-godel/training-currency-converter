@@ -107,6 +107,7 @@ export async function expectQueryState(
   await expect
     .poll(() => {
       const url = new URL(page.url());
+
       return {
         amount: url.searchParams.get("amount"),
         from: url.searchParams.get("from"),

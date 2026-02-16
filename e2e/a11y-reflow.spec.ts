@@ -30,11 +30,14 @@ test.describe("accessibility and responsive behavior", () => {
     await expect(amountInput).toHaveValue("200");
 
     const beforeSwapFrom = await fromSelect.inputValue();
-    const beforeSwapTo = await toSelect.inputValue();
+    const beforeKeyboardTo = await toSelect.inputValue();
 
     await toSelect.focus();
-    await page.keyboard.press("ArrowDown");
+    await page.keyboard.type("g");
     await expect(toSelect).toBeFocused();
+    await expect(toSelect).not.toHaveValue(beforeKeyboardTo);
+
+    const beforeSwapTo = await toSelect.inputValue();
 
     await page.getByRole("button", { name: "Favorite USD" }).focus();
     await page.keyboard.press(" ");
@@ -50,6 +53,7 @@ test.describe("accessibility and responsive behavior", () => {
     const refreshRequest = page.waitForRequest((request) =>
       request.url().includes("/api/rates?refresh="),
     );
+
     await refreshButton.focus();
     await page.keyboard.press("Enter");
     await refreshRequest;

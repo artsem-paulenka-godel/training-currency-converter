@@ -24,7 +24,7 @@ export const playwrightConfig = defineConfig({
   },
   webServer: shouldStartWebServer
     ? {
-        command: `PORT=${port} npm run dev`,
+        command: `npm run dev -- --port ${port}`,
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 120000,
@@ -35,6 +35,14 @@ export const playwrightConfig = defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
+    ...(process.env.CI
+      ? [
+          {
+            name: "firefox",
+            use: { ...devices["Desktop Firefox"] },
+          },
+        ]
+      : []),
   ],
 });
 
