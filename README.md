@@ -107,6 +107,43 @@ npm run build
 npm start
 ```
 
+## Testing
+
+### Unit Tests
+
+```bash
+npm test
+```
+
+### E2E Tests (Playwright)
+
+```bash
+npx playwright install
+npm run test:e2e
+```
+
+Optional UI runner:
+
+```bash
+npm run test:e2e:ui
+```
+
+Run tests in a headed browser:
+
+```bash
+npm run test:e2e:headed
+```
+
+### E2E Coverage Scope
+
+Current Playwright coverage focuses on the highest-risk user flows:
+
+- Conversion happy path, validation, swap behavior, and manual rate refresh
+- URL state as source of truth (initial load, invalid params fallback, same-currency correction, browser back/forward)
+- Favorites lifecycle (favorite/unfavorite, limit enforcement, reload persistence, storage-unavailable fallback)
+- Conversion history behavior (reload from history, persistence, max-10 trimming, clear + empty state)
+- Accessibility/responsive checks (keyboard-first interaction path and 320px reflow without horizontal scrolling)
+
 ## Project Structure
 
 ```

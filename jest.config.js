@@ -27,6 +27,7 @@ const config = {
     '**/__tests__/**/*.[jt]s?(x)',
     '**/?(*.)+(spec|test).[jt]s?(x)',
   ],
+  testPathIgnorePatterns: ['<rootDir>/e2e/'],
   moduleDirectories: ['node_modules', '<rootDir>/'],
 };
 
